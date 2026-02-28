@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tiers — Open Decks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0C0F0A;
+  --surface: #141710;
+  --surface2: #1C2018;
+  --border: #2A2E26;
+  --border2: #363B30;
+  --green: #A8C27A;
+  --green-b: #C8E890;
+  --green-d: rgba(168,194,122,0.10);
+  --amber: #E8B84B;
+  --coral: #E05A3A;
+  --text: #E8E4D8;
+  --muted: #6B7060;
+  --muted2: #9A9080;
+  --nav-h: 64px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'DM Mono',monospace;line-height:1.6;
+  overflow-x:hidden;padding-top:var(--nav-h);
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 70% 40% at 50% 0%,rgba(168,194,122,0.04) 0%,transparent 70%);
+}
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;
+  background:rgba(12,15,10,0.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:16px;
+  letter-spacing:-0.5px;color:var(--text);text-decoration:none;
+  display:flex;align-items:center;gap:10px;
+}
+.nav-logo .od-mark{
+  width:28px;height:28px;background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;color:var(--bg);letter-spacing:-0.5px;
+}
+.nav-links{display:flex;gap:0;list-style:none;}
+.nav-links a{
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:600;
+  letter-spacing:0.5px;color:var(--muted);text-decoration:none;
+  padding:8px 16px;transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--text)}
+.nav-links a.active{color:var(--green-b)}
+.nav-cta{
+  padding:9px 22px;background:var(--green);
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--bg);text-decoration:none;border:none;cursor:pointer;
+  transition:background 0.2s;white-space:nowrap;
+}
+.nav-cta:hover{background:var(--green-b)}
+/* ── SHARED LAYOUT ── */
+.page-wrap{max-width:1100px;margin:0 auto;padding:0 48px;}
+section{padding:88px 0;}
+.section-label{
+  font-family:'Syne',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:4px;text-transform:uppercase;color:var(--green);margin-bottom:18px;
+}
+h1{
+  font-family:'Fraunces',serif;
+  font-size:clamp(56px,9vw,120px);font-weight:800;
+  line-height:0.92;letter-spacing:-3px;color:var(--text);
+}
+h1 em{font-style:italic;color:var(--green-b)}
+h2{
+  font-family:'Fraunces',serif;
+  font-size:clamp(36px,4.5vw,64px);font-weight:700;
+  line-height:1.0;letter-spacing:-2px;color:var(--text);
+}
+h2 em{font-style:italic;color:var(--green-b)}
+h3{
+  font-family:'Fraunces',serif;font-size:clamp(22px,2.5vw,32px);
+  font-weight:700;letter-spacing:-0.8px;color:var(--text);
+}
+.body-text{
+  font-size:14px;font-weight:300;color:var(--muted2);line-height:1.9;
+}
+.body-text strong{color:var(--text);font-weight:500}
+.divider{border:none;border-top:1px solid var(--border);margin:0;}
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  text-decoration:none;border:none;cursor:pointer;
+  padding:13px 30px;transition:all 0.2s;
+}
+.btn-primary{background:var(--green);color:var(--bg)}
+.btn-primary:hover{background:var(--green-b)}
+.btn-ghost{background:transparent;color:var(--text);border:1.5px solid var(--border2)}
+.btn-ghost:hover{border-color:var(--green);color:var(--green)}
+/* ── CHIPS ── */
+.chip{
+  display:inline-flex;padding:5px 14px;
+  border:1px solid var(--border2);font-size:9px;
+  font-family:'Syne',sans-serif;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted2);
+}
+.chip.on{border-color:var(--green);color:var(--green);background:var(--green-d)}
+/* ── FOOTER ── */
+footer{
+  background:var(--surface);border-top:1px solid var(--border);
+  padding:56px 48px 36px;position:relative;z-index:1;
+}
+.footer-grid{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;
+  margin-bottom:48px;
+}
+.footer-logo{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:16px;
+  letter-spacing:-0.5px;margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.footer-logo .od-mark{
+  width:24px;height:24px;background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:800;color:var(--bg);
+}
+.footer-brand-sub{
+  font-size:12px;font-weight:300;color:var(--muted);line-height:1.7;
+}
+.footer-brand-sub a{color:var(--green);text-decoration:none}
+.footer-col h5{
+  font-family:'Syne',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;
+  color:rgba(168,194,122,0.4);margin-bottom:16px;
+}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-col a{
+  font-size:12px;font-weight:300;color:var(--muted);
+  text-decoration:none;transition:color 0.2s;
+}
+.footer-col a:hover{color:var(--green)}
+.footer-bottom{
+  max-width:1100px;margin:0 auto;
+  border-top:1px solid var(--border);padding-top:24px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+}
+.footer-bottom p{font-size:11px;font-weight:300;color:var(--muted)}
+.footer-bottom strong{color:var(--green);font-weight:500}
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .page-wrap,.footer-grid{padding:0 20px}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+  section{padding:64px 0}
+}
+@media(max-width:600px){
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;text-align:center}
+}
+
+.tiers-hero{padding:80px 0 48px}
+.tier-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:48px;}
+.tier-card{
+  background:var(--surface);border:1px solid var(--border);
+  padding:28px 20px;display:flex;flex-direction:column;gap:0;
+  position:relative;overflow:hidden;
+}
+.tier-card.featured{border-color:var(--green);background:var(--green-d);}
+.tier-card.steward-card{border-color:var(--coral);}
+.tc-label{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.tc-name{font-family:'Fraunces',serif;font-size:26px;font-weight:800;letter-spacing:-1px;margin-bottom:4px;}
+.tc-price{font-size:12px;color:var(--muted2);margin-bottom:16px;}
+.tc-price strong{color:var(--text);font-size:18px;font-weight:700;}
+.tc-divider{height:1px;background:var(--border);margin:16px 0;}
+.tc-features{display:flex;flex-direction:column;gap:8px;flex:1;}
+.tcf{font-size:11px;color:var(--muted2);line-height:1.5;display:flex;gap:8px;}
+.tcf.yes::before{content:'✓';color:var(--green);flex-shrink:0;}
+.tcf.lim::before{content:'◑';color:var(--amber);flex-shrink:0;}
+.tcf.no::before{content:'—';color:var(--border2);flex-shrink:0;}
+.tc-cta{
+  margin-top:20px;padding:10px;text-align:center;
+  font-family:'Syne',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  background:transparent;border:1.5px solid var(--border2);
+  color:var(--muted2);cursor:pointer;text-decoration:none;display:block;
+  transition:all 0.2s;
+}
+.tc-cta:hover,.tier-card.featured .tc-cta{
+  background:var(--green);border-color:var(--green);color:var(--bg);
+}
+.tier-card.steward-card .tc-cta{border-color:var(--coral);color:var(--coral);}
+.tier-card.steward-card .tc-cta:hover{background:var(--coral);color:white;}
+.tc-badge{
+  position:absolute;top:12px;right:12px;
+  font-size:8px;letter-spacing:2px;text-transform:uppercase;
+  padding:3px 8px;border:1px solid var(--green);color:var(--green);
+}
+/* matrix */
+.matrix-wrap{overflow-x:auto;margin-top:48px;}
+.matrix{width:100%;border-collapse:collapse;}
+.matrix th,.matrix td{
+  padding:10px 14px;text-align:left;font-size:11px;
+  border-bottom:1px solid var(--border);
+}
+.matrix th{
+  font-family:'Syne',sans-serif;font-weight:700;font-size:9px;
+  letter-spacing:2px;text-transform:uppercase;
+  background:var(--surface2);color:var(--muted);
+}
+.matrix th.hl{color:var(--green);}
+.matrix td.cat{color:var(--muted);font-size:10px;}
+.matrix td.yes{color:var(--green);}
+.matrix td.lim{color:var(--amber);}
+.matrix td.no{color:var(--border2);}
+.matrix tr:hover td{background:var(--surface2);}
+/* note */
+.api-note{
+  background:var(--surface);border:1px solid var(--border);
+  border-left:4px solid var(--amber);padding:28px 28px;margin-top:2px;
+}
+@media(max-width:900px){
+  .tier-cards{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:600px){
+  .tier-cards{grid-template-columns:1fr;}
+}
+
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="od-mark">OD</div>
+    Open Decks
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+<li><a href="concept.html">Concept</a></li>
+<li><a href="how-it-works.html">How It Works</a></li>
+<li><a href="tiers.html" class="active">Tiers</a></li>
+<li><a href="about.html">About</a></li>
+
+  </ul>
+  <a href="tiers.html" class="nav-cta">Start Free</a>
+</nav>
+<div class="page-wrap">
+  <section class="tiers-hero">
+    <p class="section-label">Tiers &amp; Access</p>
+    <h1 style="font-size:clamp(48px,7vw,96px)">Start free.<br><em>Go deep.</em></h1>
+    <p class="body-text" style="margin-top:20px;max-width:580px">Open Decks is free for everyone at the foundation level. Advanced tools that require deeper API access, data partner integrations, or community features unlock as you level up — through play or subscription.</p>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="tier-cards">
+
+      <div class="tier-card">
+        <div class="tc-label">Tier 01</div>
+        <div class="tc-name">Rookie</div>
+        <div class="tc-price"><strong>Free</strong> · forever</div>
+        <div class="tc-divider"></div>
+        <div class="tc-features">
+          <div class="tcf yes">Sample playlists (genre-matched)</div>
+          <div class="tcf yes">Alphabet Run (sample library)</div>
+          <div class="tcf lim">Phrase Finder (top 3 results)</div>
+          <div class="tcf yes">Camelot Wild D6</div>
+          <div class="tcf yes">Tempo Tap + Key ID</div>
+          <div class="tcf yes">Crowd Reader (basic)</div>
+          <div class="tcf yes">The Rulebook (full)</div>
+          <div class="tcf yes">DJ Passport (levels 1–5)</div>
+          <div class="tcf no">Library connection</div>
+          <div class="tcf no">Advanced tools</div>
+        </div>
+        <a href="#" class="tc-cta">Start Free</a>
+      </div>
+
+      <div class="tier-card featured">
+        <div class="tc-badge">Popular</div>
+        <div class="tc-label">Tier 02</div>
+        <div class="tc-name" style="color:var(--green-b)">Selector</div>
+        <div class="tc-price"><strong>Free</strong> · library required</div>
+        <div class="tc-divider"></div>
+        <div class="tc-features">
+          <div class="tcf yes">Everything in Rookie</div>
+          <div class="tcf yes">Spotify + Apple Music sync</div>
+          <div class="tcf yes">Alphabet Run on your library</div>
+          <div class="tcf yes">Phrase Finder (unlimited, Bridge mode)</div>
+          <div class="tcf yes">Camelot Wild D6 + D12</div>
+          <div class="tcf yes">Era Mapper + BPM Block</div>
+          <div class="tcf yes">Theme Thread + Vocal Texture</div>
+          <div class="tcf yes">DJ Passport (levels 1–15)</div>
+          <div class="tcf no">Cultural tools</div>
+          <div class="tcf no">The SET game</div>
+        </div>
+        <a href="#" class="tc-cta">Connect Library</a>
+      </div>
+
+      <div class="tier-card">
+        <div class="tc-label">Tier 03</div>
+        <div class="tc-name">Mixer</div>
+        <div class="tc-price"><strong>$6</strong>/mo · or earn via play</div>
+        <div class="tc-divider"></div>
+        <div class="tc-features">
+          <div class="tcf yes">Everything in Selector</div>
+          <div class="tcf yes">Full ear training suite</div>
+          <div class="tcf yes">Camelot Wild CHAOS mode</div>
+          <div class="tcf yes">The SET game (full loop)</div>
+          <div class="tcf yes">Origin Trace + Regional Sound</div>
+          <div class="tcf yes">Back-to-Back Sim (adaptive AI)</div>
+          <div class="tcf yes">Technical Fail + Open Format</div>
+          <div class="tcf yes">Community challenge leaderboards</div>
+          <div class="tcf yes">DJ Passport (levels 1–25)</div>
+        </div>
+        <a href="#" class="tc-cta">Unlock Mixer</a>
+      </div>
+
+      <div class="tier-card">
+        <div class="tc-label">Tier 04</div>
+        <div class="tc-name">Architect</div>
+        <div class="tc-price"><strong>$12</strong>/mo · or Steward invite</div>
+        <div class="tc-divider"></div>
+        <div class="tc-features">
+          <div class="tcf yes">Everything in Mixer</div>
+          <div class="tcf yes">WhoSampled integration (Sample ID)</div>
+          <div class="tcf yes">Discogs + AllMusic cultural layer</div>
+          <div class="tcf yes">The Long Game + Mirror Set</div>
+          <div class="tcf yes">Ghost Track + Blind Mix</div>
+          <div class="tcf yes">Steward challenge access</div>
+          <div class="tcf yes">Full community leaderboards</div>
+          <div class="tcf yes">Beta feature access</div>
+          <div class="tcf yes">DJ Passport (levels 1–40)</div>
+        </div>
+        <a href="#" class="tc-cta">Unlock Architect</a>
+      </div>
+
+      <div class="tier-card steward-card">
+        <div class="tc-label">Tier 05</div>
+        <div class="tc-name" style="color:var(--coral)">Steward</div>
+        <div class="tc-price">By <strong>invitation</strong> · no fee</div>
+        <div class="tc-divider"></div>
+        <div class="tc-features">
+          <div class="tcf yes">Everything in Architect</div>
+          <div class="tcf yes">Post community Gig Briefs</div>
+          <div class="tcf yes">Contribute to cultural layer</div>
+          <div class="tcf yes">Custom ruleset creation</div>
+          <div class="tcf yes">Governance seat in Open X</div>
+          <div class="tcf yes">Annotate The Rulebook</div>
+          <div class="tcf yes">Full data export</div>
+          <div class="tcf yes">Debrief commentary for Architects</div>
+        </div>
+        <a href="about.html#stewards" class="tc-cta">Apply to be a Steward</a>
+      </div>
+
+    </div>
+
+    <div class="api-note" style="margin-top:24px">
+      <p style="font-size:12px;color:var(--muted2);line-height:1.8"><strong style="color:var(--amber)">Why do advanced tiers cost money?</strong> Several tools at Mixer and Architect tier require access to paid API tiers from WhoSampled, Discogs, AllMusic, and other data partners. Your subscription covers these costs directly — and keeps the Rookie and Selector tiers genuinely free. Mixer tier also auto-unlocks at Selector Level 15 through play alone: subscription is optional early access.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <p class="section-label">Feature Matrix</p>
+    <h2>Everything, mapped<br>across <em>all tiers</em>.</h2>
+    <div class="matrix-wrap">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th style="width:220px">Tool / Feature</th>
+            <th>Rookie</th>
+            <th class="hl">Selector</th>
+            <th>Mixer</th>
+            <th>Architect</th>
+            <th>Steward</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="cat" colspan="6" style="background:var(--surface2);font-family:'Syne',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase">GROOVE &amp; RHYTHM</td></tr>
+          <tr><td>BPM Ladder</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Phrase Align</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Half / Double</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Polyrhythm Run</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>The Long Fade</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td class="cat" colspan="6" style="background:var(--surface2);font-family:'Syne',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase">HARMONIC &amp; KEY</td></tr>
+          <tr><td>Camelot Wild D6</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Camelot Wild D12</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Camelot Chaos</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Tension &amp; Release</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td class="cat" colspan="6" style="background:var(--surface2);font-family:'Syne',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase">LIBRARY &amp; CURATION</td></tr>
+          <tr><td>Alphabet Run (sample)</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Alphabet Run (your library)</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Era Mapper</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Label Run</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Influence Web</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>The Crate Dig</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td class="cat" colspan="6" style="background:var(--surface2);font-family:'Syne',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase">NARRATIVE &amp; LYRIC</td></tr>
+          <tr><td>Phrase Finder (basic)</td><td class="lim">◑ 3 results</td><td class="yes">✓ Full</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Phrase Bridge mode</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Subtext Map</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td class="cat" colspan="6" style="background:var(--surface2);font-family:'Syne',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase">EAR TRAINING</td></tr>
+          <tr><td>Tempo Tap</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Key ID</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Blind Mix</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td class="cat" colspan="6" style="background:var(--surface2);font-family:'Syne',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase">CULTURAL KNOWLEDGE</td></tr>
+          <tr><td>Origin Trace</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Sample ID (WhoSampled)</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Scene Builder</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td class="cat" colspan="6" style="background:var(--surface2);font-family:'Syne',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase">PERFORMANCE</td></tr>
+          <tr><td>The SET Game</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Back-to-Back Sim</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Technical Fail</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>The Handoff</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td class="cat" colspan="6" style="background:var(--surface2);font-family:'Syne',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase">COMMUNITY &amp; GOVERNANCE</td></tr>
+          <tr><td>Post Gig Briefs</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Cultural layer contributions</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Open X governance seat</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo"><div class="od-mark">OD</div>Open Decks</div>
+      <p class="footer-brand-sub">A platform for learning DJ culture.<br>Built by <a href="about.html">Open X</a> — a Richmond, VA 501(c)(3).<br><a href="https://openx.org" target="_blank">openx.org ↗</a></p>
+    </div>
+    <div class="footer-col">
+      <h5>Platform</h5>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="concept.html">Concept Demo</a></li>
+        <li><a href="how-it-works.html">How It Works</a></li>
+        <li><a href="tiers.html">Tiers & Access</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Community</h5>
+      <ul>
+        <li><a href="about.html">About Open X</a></li>
+        <li><a href="about.html#stewards">Become a Steward</a></li>
+        <li><a href="about.html#venues">Partner a Venue</a></li>
+        <li><a href="tiers.html">Join Free</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Powered By</h5>
+      <ul>
+        <li><a href="#" target="_blank">Spotify · Apple Music</a></li>
+        <li><a href="#" target="_blank">Genius · Musixmatch</a></li>
+        <li><a href="#" target="_blank">MusicBrainz · Discogs</a></li>
+        <li><a href="#" target="_blank">WhoSampled · Last.fm</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Open Decks · A program of <strong>Open X</strong> · 501(c)(3) · Richmond, VA</p>
+    <p>Music culture belongs to everyone.</p>
+  </div>
+</footer>
+</body>
+</html>

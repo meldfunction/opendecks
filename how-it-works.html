@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How It Works — Open Decks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0C0F0A;
+  --surface: #141710;
+  --surface2: #1C2018;
+  --border: #2A2E26;
+  --border2: #363B30;
+  --green: #A8C27A;
+  --green-b: #C8E890;
+  --green-d: rgba(168,194,122,0.10);
+  --amber: #E8B84B;
+  --coral: #E05A3A;
+  --text: #E8E4D8;
+  --muted: #6B7060;
+  --muted2: #9A9080;
+  --nav-h: 64px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'DM Mono',monospace;line-height:1.6;
+  overflow-x:hidden;padding-top:var(--nav-h);
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 70% 40% at 50% 0%,rgba(168,194,122,0.04) 0%,transparent 70%);
+}
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;
+  background:rgba(12,15,10,0.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:16px;
+  letter-spacing:-0.5px;color:var(--text);text-decoration:none;
+  display:flex;align-items:center;gap:10px;
+}
+.nav-logo .od-mark{
+  width:28px;height:28px;background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;color:var(--bg);letter-spacing:-0.5px;
+}
+.nav-links{display:flex;gap:0;list-style:none;}
+.nav-links a{
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:600;
+  letter-spacing:0.5px;color:var(--muted);text-decoration:none;
+  padding:8px 16px;transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--text)}
+.nav-links a.active{color:var(--green-b)}
+.nav-cta{
+  padding:9px 22px;background:var(--green);
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--bg);text-decoration:none;border:none;cursor:pointer;
+  transition:background 0.2s;white-space:nowrap;
+}
+.nav-cta:hover{background:var(--green-b)}
+/* ── SHARED LAYOUT ── */
+.page-wrap{max-width:1100px;margin:0 auto;padding:0 48px;}
+section{padding:88px 0;}
+.section-label{
+  font-family:'Syne',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:4px;text-transform:uppercase;color:var(--green);margin-bottom:18px;
+}
+h1{
+  font-family:'Fraunces',serif;
+  font-size:clamp(56px,9vw,120px);font-weight:800;
+  line-height:0.92;letter-spacing:-3px;color:var(--text);
+}
+h1 em{font-style:italic;color:var(--green-b)}
+h2{
+  font-family:'Fraunces',serif;
+  font-size:clamp(36px,4.5vw,64px);font-weight:700;
+  line-height:1.0;letter-spacing:-2px;color:var(--text);
+}
+h2 em{font-style:italic;color:var(--green-b)}
+h3{
+  font-family:'Fraunces',serif;font-size:clamp(22px,2.5vw,32px);
+  font-weight:700;letter-spacing:-0.8px;color:var(--text);
+}
+.body-text{
+  font-size:14px;font-weight:300;color:var(--muted2);line-height:1.9;
+}
+.body-text strong{color:var(--text);font-weight:500}
+.divider{border:none;border-top:1px solid var(--border);margin:0;}
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  text-decoration:none;border:none;cursor:pointer;
+  padding:13px 30px;transition:all 0.2s;
+}
+.btn-primary{background:var(--green);color:var(--bg)}
+.btn-primary:hover{background:var(--green-b)}
+.btn-ghost{background:transparent;color:var(--text);border:1.5px solid var(--border2)}
+.btn-ghost:hover{border-color:var(--green);color:var(--green)}
+/* ── CHIPS ── */
+.chip{
+  display:inline-flex;padding:5px 14px;
+  border:1px solid var(--border2);font-size:9px;
+  font-family:'Syne',sans-serif;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted2);
+}
+.chip.on{border-color:var(--green);color:var(--green);background:var(--green-d)}
+/* ── FOOTER ── */
+footer{
+  background:var(--surface);border-top:1px solid var(--border);
+  padding:56px 48px 36px;position:relative;z-index:1;
+}
+.footer-grid{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;
+  margin-bottom:48px;
+}
+.footer-logo{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:16px;
+  letter-spacing:-0.5px;margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.footer-logo .od-mark{
+  width:24px;height:24px;background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:800;color:var(--bg);
+}
+.footer-brand-sub{
+  font-size:12px;font-weight:300;color:var(--muted);line-height:1.7;
+}
+.footer-brand-sub a{color:var(--green);text-decoration:none}
+.footer-col h5{
+  font-family:'Syne',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;
+  color:rgba(168,194,122,0.4);margin-bottom:16px;
+}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-col a{
+  font-size:12px;font-weight:300;color:var(--muted);
+  text-decoration:none;transition:color 0.2s;
+}
+.footer-col a:hover{color:var(--green)}
+.footer-bottom{
+  max-width:1100px;margin:0 auto;
+  border-top:1px solid var(--border);padding-top:24px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+}
+.footer-bottom p{font-size:11px;font-weight:300;color:var(--muted)}
+.footer-bottom strong{color:var(--green);font-weight:500}
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .page-wrap,.footer-grid{padding:0 20px}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+  section{padding:64px 0}
+}
+@media(max-width:600px){
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;text-align:center}
+}
+
+.layer-section{padding:80px 0;}
+.layer-intro{display:grid;grid-template-columns:200px 1fr;gap:40px;align-items:start;margin-bottom:40px;}
+.layer-num{font-family:'Fraunces',serif;font-size:80px;font-weight:900;letter-spacing:-4px;line-height:1;color:var(--border2);}
+.layer-head h3{margin-bottom:10px;}
+.partner-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;}
+.partner-card{
+  background:var(--surface);border:1px solid var(--border);padding:20px;
+  display:flex;flex-direction:column;gap:8px;transition:border-color 0.2s;
+}
+.partner-card:hover{border-color:var(--border2);}
+.partner-logo{
+  font-family:'Syne',sans-serif;font-size:14px;font-weight:800;
+  letter-spacing:-0.5px;color:var(--text);margin-bottom:4px;
+}
+.partner-desc{font-size:11px;font-weight:300;color:var(--muted2);line-height:1.65;}
+.partner-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
+.ptag{font-size:8px;padding:2px 7px;border:1px solid var(--border2);color:var(--muted);letter-spacing:1px;}
+.ptag.active{border-color:rgba(168,194,122,0.4);color:var(--green);}
+/* feature cascade */
+.feature-category{margin-bottom:2px;}
+.fc-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 22px;background:var(--surface);border:1px solid var(--border);
+  cursor:pointer;transition:background 0.15s;user-select:none;
+}
+.fc-header:hover{background:var(--surface2);}
+.fc-header.open{border-color:var(--green);background:var(--green-d);}
+.fc-title{font-family:'Fraunces',serif;font-size:20px;font-weight:700;letter-spacing:-0.5px;}
+.fc-meta{display:flex;align-items:center;gap:12px;}
+.fc-count{font-size:10px;color:var(--muted);letter-spacing:1px;}
+.fc-tier{font-size:9px;padding:3px 8px;border:1px solid var(--border2);color:var(--muted2);}
+.fc-arrow{color:var(--green);transition:transform 0.2s;font-size:12px;}
+.fc-header.open .fc-arrow{transform:rotate(90deg);}
+.fc-body{
+  display:none;
+  background:var(--surface2);border:1px solid var(--border);border-top:none;
+  padding:20px 22px;
+}
+.fc-body.open{display:block;}
+.fc-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;}
+.fc-tool{
+  background:var(--surface);border:1px solid var(--border);
+  padding:14px;transition:border-color 0.15s;
+}
+.fc-tool:hover{border-color:var(--border2);}
+.ft-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.5px;margin-bottom:4px;}
+.ft-desc{font-size:10px;color:var(--muted2);line-height:1.6;}
+.ft-tier{font-size:8px;color:var(--amber);letter-spacing:1px;margin-top:6px;}
+/* logo wall */
+.logo-wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:2px;margin-top:40px;}
+.logo-tile{
+  background:var(--surface);border:1px solid var(--border);
+  padding:20px 16px;display:flex;flex-direction:column;align-items:center;
+  gap:8px;transition:border-color 0.2s;cursor:default;
+}
+.logo-tile:hover{border-color:var(--border2);}
+.logo-name{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--text);}
+.logo-type{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.logo-icon{font-size:24px;}
+@media(max-width:900px){
+  .layer-intro{grid-template-columns:1fr;}
+  .layer-num{font-size:48px;}
+}
+
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="od-mark">OD</div>
+    Open Decks
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+<li><a href="concept.html">Concept</a></li>
+<li><a href="how-it-works.html" class="active">How It Works</a></li>
+<li><a href="tiers.html">Tiers</a></li>
+<li><a href="about.html">About</a></li>
+
+  </ul>
+  <a href="tiers.html" class="nav-cta">Start Free</a>
+</nav>
+<div class="page-wrap">
+  <section style="padding:80px 0 48px">
+    <p class="section-label">How It Works</p>
+    <h1 style="font-size:clamp(48px,7vw,96px)">Your library.<br>Our challenges.<br><em>Real technique.</em></h1>
+    <p class="body-text" style="margin-top:24px;max-width:560px">Open Decks is built on a stack of music data APIs, audio analysis tools, and community knowledge. Here's every layer — and what it unlocks for you.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- LAYER 1 -->
+  <section class="layer-section">
+    <div class="layer-intro">
+      <div class="layer-num">01</div>
+      <div class="layer-head">
+        <h3>Connect Your Music</h3>
+        <p class="body-text" style="margin-top:10px">Start with what you already have. Open Decks connects to the services you use — or you can begin immediately with sample playlists, no login required.</p>
+      </div>
+    </div>
+    <div class="partner-cards">
+      <div class="partner-card">
+        <div class="logo-icon">🎵</div>
+        <div class="partner-logo">Spotify</div>
+        <p class="partner-desc">Full library sync, BPM and key metadata via audio features API, playlist import, real-time search.</p>
+        <div class="partner-tags"><span class="ptag active">Library</span><span class="ptag active">BPM</span><span class="ptag active">Key</span></div>
+      </div>
+      <div class="partner-card">
+        <div class="logo-icon">🍎</div>
+        <div class="partner-logo">Apple Music</div>
+        <p class="partner-desc">Library sync via MusicKit, playlist import, catalogue search across 100M+ tracks.</p>
+        <div class="partner-tags"><span class="ptag active">Library</span><span class="ptag active">Search</span></div>
+      </div>
+      <div class="partner-card">
+        <div class="logo-icon">▶</div>
+        <div class="partner-logo">YouTube Music</div>
+        <p class="partner-desc">Search and stream for reference listening. Limited challenge features — best for concept demos.</p>
+        <div class="partner-tags"><span class="ptag">Stream</span><span class="ptag">Search</span></div>
+      </div>
+      <div class="partner-card">
+        <div class="logo-icon">📁</div>
+        <div class="partner-logo">Local Files</div>
+        <p class="partner-desc">Drag and drop MP3, FLAC, or WAV. Client-side analysis via Essentia.js. No upload required.</p>
+        <div class="partner-tags"><span class="ptag active">Offline</span><span class="ptag active">Analysis</span></div>
+      </div>
+      <div class="partner-card" style="border-color:var(--green);background:var(--green-d)">
+        <div class="logo-icon">🎲</div>
+        <div class="partner-logo" style="color:var(--green)">No Account</div>
+        <p class="partner-desc">Start immediately with genre-matched sample playlists. Full Alphabet Run and basic challenges available from first visit.</p>
+        <div class="partner-tags"><span class="ptag active">Free</span><span class="ptag active">No Login</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- LAYER 2 -->
+  <section class="layer-section">
+    <div class="layer-intro">
+      <div class="layer-num">02</div>
+      <div class="layer-head">
+        <h3>Audio Intelligence</h3>
+        <p class="body-text" style="margin-top:10px">Once we have your tracks, we analyze them. Every song in your library gets a BPM, a Camelot key position, an energy rating, and a danceability score — the foundation for every challenge.</p>
+      </div>
+    </div>
+    <div class="partner-cards">
+      <div class="partner-card">
+        <div class="logo-icon">🔬</div>
+        <div class="partner-logo">AcousticBrainz</div>
+        <p class="partner-desc">Open audio analysis database. BPM detection, key detection, danceability, mood — all from audio fingerprints.</p>
+        <div class="partner-tags"><span class="ptag active">BPM</span><span class="ptag active">Key</span><span class="ptag active">Mood</span><span class="ptag active">Open Source</span></div>
+      </div>
+      <div class="partner-card">
+        <div class="logo-icon">🎛</div>
+        <div class="partner-logo">Essentia.js</div>
+        <p class="partner-desc">In-browser audio analysis library. Runs locally — no server upload. Real-time BPM and key detection for local files.</p>
+        <div class="partner-tags"><span class="ptag active">In-Browser</span><span class="ptag active">Offline</span><span class="ptag active">Open Source</span></div>
+      </div>
+      <div class="partner-card">
+        <div class="logo-icon">🗝</div>
+        <div class="partner-logo">Key Finder</div>
+        <p class="partner-desc">Camelot wheel mapping and harmonic compatibility scoring. Powers every key-related challenge on the platform.</p>
+        <div class="partner-tags"><span class="ptag active">Camelot</span><span class="ptag active">Harmony</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- LAYER 3 -->
+  <section class="layer-section">
+    <div class="layer-intro">
+      <div class="layer-num">03</div>
+      <div class="layer-head">
+        <h3>Lyric Intelligence</h3>
+        <p class="body-text" style="margin-top:10px">The words matter too. Phrase Finder runs semantic search against your library's lyrics — finding emotional and thematic bridges, not just exact word matches.</p>
+      </div>
+    </div>
+    <div class="partner-cards">
+      <div class="partner-card">
+        <div class="logo-icon">📝</div>
+        <div class="partner-logo">Genius</div>
+        <p class="partner-desc">World's largest lyric database. Phrase-level search, annotation data, songwriter credits, and cultural context notes.</p>
+        <div class="partner-tags"><span class="ptag active">Lyrics</span><span class="ptag active">Search</span><span class="ptag active">Annotations</span></div>
+      </div>
+      <div class="partner-card">
+        <div class="logo-icon">🎤</div>
+        <div class="partner-logo">Musixmatch</div>
+        <p class="partner-desc">Real-time lyric sync, mood tagging, language detection. Powers the live Bridge mode in Phrase Finder.</p>
+        <div class="partner-tags"><span class="ptag active">Sync</span><span class="ptag active">Mood</span></div>
+      </div>
+      <div class="partner-card">
+        <div class="logo-icon">🧠</div>
+        <div class="partner-logo">Semantic Layer</div>
+        <p class="partner-desc">Open Decks' own phrase embedding layer. Converts lyrics to vector space so Phrase Finder finds meaning, not just keywords.</p>
+        <div class="partner-tags"><span class="ptag active">Embeddings</span><span class="ptag active">NLP</span><span class="ptag active">Internal</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- LAYER 4 -->
+  <section class="layer-section">
+    <div class="layer-intro">
+      <div class="layer-num">04</div>
+      <div class="layer-head">
+        <h3>Cultural Context</h3>
+        <p class="body-text" style="margin-top:10px">Music has roots. Era Mapper, Origin Trace, Influence Web, and Sample ID are all powered by this layer — where Open Decks goes from technical training to genuinely educational.</p>
+      </div>
+    </div>
+    <div class="partner-cards">
+      <div class="partner-card">
+        <div class="logo-icon">🗃</div>
+        <div class="partner-logo">MusicBrainz</div>
+        <p class="partner-desc">Open music encyclopedia. Release dates, genre tags, artist relationships, label history. The backbone of cultural tools.</p>
+        <div class="partner-tags"><span class="ptag active">Era</span><span class="ptag active">Genre</span><span class="ptag active">Open Source</span></div>
+      </div>
+      <div class="partner-card">
+        <div class="logo-icon">💿</div>
+        <div class="partner-logo">Discogs</div>
+        <p class="partner-desc">Label data, pressing history, regional release metadata. Powers Label Run and genre provenance tools.</p>
+        <div class="partner-tags"><span class="ptag active">Labels</span><span class="ptag active">Region</span><span class="ptag">Mixer+</span></div>
+      </div>
+      <div class="partner-card">
+        <div class="logo-icon">📖</div>
+        <div class="partner-logo">AllMusic</div>
+        <p class="partner-desc">Genre lineage, editorial tags, influence mapping. Connects tracks to the scenes that shaped them.</p>
+        <div class="partner-tags"><span class="ptag active">Lineage</span><span class="ptag active">Influences</span><span class="ptag">Architect+</span></div>
+      </div>
+      <div class="partner-card">
+        <div class="logo-icon">🔁</div>
+        <div class="partner-logo">WhoSampled</div>
+        <p class="partner-desc">Sample chains and interpolation tracking. Powers the Sample ID tool at Architect tier.</p>
+        <div class="partner-tags"><span class="ptag active">Samples</span><span class="ptag">Architect+</span></div>
+      </div>
+      <div class="partner-card">
+        <div class="logo-icon">📡</div>
+        <div class="partner-logo">Last.fm</div>
+        <p class="partner-desc">Listening graphs, similar artist relationships, scrobble-based genre clusters. Powers Influence Web.</p>
+        <div class="partner-tags"><span class="ptag active">Similarity</span><span class="ptag active">Graphs</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- LAYER 5: COMMUNITY -->
+  <section class="layer-section">
+    <div class="layer-intro">
+      <div class="layer-num">05</div>
+      <div class="layer-head">
+        <h3>Community Intelligence</h3>
+        <p class="body-text" style="margin-top:10px">The last layer isn't a database. It's the Stewards. They contribute scene knowledge that no API contains — and they govern the platform through Open X's sociocratic structure.</p>
+      </div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--coral);padding:36px 32px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start">
+      <div>
+        <h3 style="margin-bottom:14px">What Stewards contribute</h3>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:12px;color:var(--muted2);line-height:1.65;display:flex;gap:10px"><span style="color:var(--coral)">→</span>Which Detroit records define the Belleville Three sound and why</div>
+          <div style="font-size:12px;color:var(--muted2);line-height:1.65;display:flex;gap:10px"><span style="color:var(--coral)">→</span>What the actual Chicago house progression felt like in 1986</div>
+          <div style="font-size:12px;color:var(--muted2);line-height:1.65;display:flex;gap:10px"><span style="color:var(--coral)">→</span>Why a specific label matters to a specific city</div>
+          <div style="font-size:12px;color:var(--muted2);line-height:1.65;display:flex;gap:10px"><span style="color:var(--coral)">→</span>Weekly Challenge Mode Gig Briefs, calibrated to tier</div>
+          <div style="font-size:12px;color:var(--muted2);line-height:1.65;display:flex;gap:10px"><span style="color:var(--coral)">→</span>Commentary on debrief scores at Architect tier</div>
+        </div>
+      </div>
+      <div>
+        <p class="body-text">This layer is edited, versioned, and governed by Open X. Stewards hold consent authority — meaning community knowledge changes only when the Stewards agree to them.</p>
+        <a href="about.html#stewards" class="btn btn-ghost" style="margin-top:20px;display:inline-flex">Apply to be a Steward →</a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- FEATURE CATEGORIES -->
+  <section>
+    <p class="section-label">Tool Library</p>
+    <h2>30+ challenges across<br><em>8 skill categories</em></h2>
+    <p class="body-text" style="margin-top:16px;margin-bottom:36px">Click any category to see the tools inside it, which data sources power them, and when they unlock.</p>
+
+    <div id="featureCategories">
+      <div class="feature-category">
+        <div class="fc-header" onclick="toggleFC(this)">
+          <div class="fc-title">🥁 Groove &amp; Rhythm</div>
+          <div class="fc-meta"><span class="fc-count">5 tools</span><span class="fc-tier">Rookie → Architect</span><span class="fc-arrow">▶</span></div>
+        </div>
+        <div class="fc-body">
+          <div class="fc-tools">
+            <div class="fc-tool"><div class="ft-name">BPM Ladder</div><div class="ft-desc">Step up/down in BPM increments across a set. Teaches controlled tempo building.</div><div class="ft-tier">Rookie · AcousticBrainz</div></div>
+            <div class="fc-tool"><div class="ft-name">Phrase Align</div><div class="ft-desc">Land transitions on 8, 16, or 32-bar phrase boundaries. Core transition technique.</div><div class="ft-tier">Selector · Audio Analysis</div></div>
+            <div class="fc-tool"><div class="ft-name">Half / Double</div><div class="ft-desc">Find tracks that work at half or double their written tempo. Expands your set range.</div><div class="ft-tier">Selector · BPM Data</div></div>
+            <div class="fc-tool"><div class="ft-name">Polyrhythm Run</div><div class="ft-desc">Cross-rhythm challenges — 3 over 4, syncopation navigation under time pressure.</div><div class="ft-tier">Mixer · Audio Analysis</div></div>
+            <div class="fc-tool"><div class="ft-name">The Long Fade</div><div class="ft-desc">60+ minute tempo arcs. Teach gradual build discipline — as slow as 1 BPM per hour.</div><div class="ft-tier">Architect · Internal</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-category">
+        <div class="fc-header" onclick="toggleFC(this)">
+          <div class="fc-title">🎼 Harmonic &amp; Key</div>
+          <div class="fc-meta"><span class="fc-count">5 tools</span><span class="fc-tier">Rookie → Steward</span><span class="fc-arrow">▶</span></div>
+        </div>
+        <div class="fc-body">
+          <div class="fc-tools">
+            <div class="fc-tool"><div class="ft-name">Camelot Wild ★</div><div class="ft-desc">Navigate the harmonic wheel under random die constraints. D6, D12, and Chaos modes.</div><div class="ft-tier">Rookie → · Key Finder</div></div>
+            <div class="fc-tool"><div class="ft-name">Modal Shift</div><div class="ft-desc">Jump between major and minor on the same root. Feel the emotional weight shift.</div><div class="ft-tier">Mixer · Key Finder</div></div>
+            <div class="fc-tool"><div class="ft-name">Chord Memory</div><div class="ft-desc">Match key families to emotional registers. Map what each harmonic position means.</div><div class="ft-tier">Mixer · Internal</div></div>
+            <div class="fc-tool"><div class="ft-name">Energy Key Map</div><div class="ft-desc">Which keys lift, which keys descend — and why. Taught through scored examples.</div><div class="ft-tier">Architect · Internal + Stewards</div></div>
+            <div class="fc-tool"><div class="ft-name">Tension &amp; Release</div><div class="ft-desc">Deliberate dissonant bridge building to a resolution. Advanced harmonic storytelling.</div><div class="ft-tier">Architect · Key Finder</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-category">
+        <div class="fc-header" onclick="toggleFC(this)">
+          <div class="fc-title">📚 Library &amp; Curation</div>
+          <div class="fc-meta"><span class="fc-count">7 tools</span><span class="fc-tier">Rookie → Architect</span><span class="fc-arrow">▶</span></div>
+        </div>
+        <div class="fc-body">
+          <div class="fc-tools">
+            <div class="fc-tool"><div class="ft-name">Alphabet Run ★</div><div class="ft-desc">Build a set A→Z against your library. Song title, artist, or label modes.</div><div class="ft-tier">Rookie · Spotify / Apple Music</div></div>
+            <div class="fc-tool"><div class="ft-name">Era Mapper</div><div class="ft-desc">Traverse decades in a single coherent set. Teaches musical lineage through selection.</div><div class="ft-tier">Selector · MusicBrainz</div></div>
+            <div class="fc-tool"><div class="ft-name">BPM Block</div><div class="ft-desc">Hold tight BPM windows for full sections. Teaches structural discipline.</div><div class="ft-tier">Selector · AcousticBrainz</div></div>
+            <div class="fc-tool"><div class="ft-name">Genre Weaver</div><div class="ft-desc">Score intentional multi-genre transitions. Reward goes to who makes it feel inevitable.</div><div class="ft-tier">Mixer · MusicBrainz</div></div>
+            <div class="fc-tool"><div class="ft-name">Label Run</div><div class="ft-desc">A→Z by record label. Deep crate knowledge challenge for serious collectors.</div><div class="ft-tier">Mixer · Discogs</div></div>
+            <div class="fc-tool"><div class="ft-name">Influence Web</div><div class="ft-desc">Chain tracks by documented musical lineage. Follow the sound through history.</div><div class="ft-tier">Architect · Last.fm + AllMusic</div></div>
+            <div class="fc-tool"><div class="ft-name">The Crate Dig</div><div class="ft-desc">Build sets using only tracks with under 500 Spotify plays. Anti-algorithm challenge.</div><div class="ft-tier">Architect · Spotify</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-category">
+        <div class="fc-header" onclick="toggleFC(this)">
+          <div class="fc-title">📖 Narrative &amp; Lyric</div>
+          <div class="fc-meta"><span class="fc-count">6 tools</span><span class="fc-tier">Rookie → Steward</span><span class="fc-arrow">▶</span></div>
+        </div>
+        <div class="fc-body">
+          <div class="fc-tools">
+            <div class="fc-tool"><div class="ft-name">Phrase Finder ★</div><div class="ft-desc">Find tracks by lyric fragment, mood, or theme. Emotional and semantic search.</div><div class="ft-tier">Rookie · Genius + Musixmatch</div></div>
+            <div class="fc-tool"><div class="ft-name">Theme Thread</div><div class="ft-desc">Build a complete set around one concept. Story structure through music selection.</div><div class="ft-tier">Selector · Genius</div></div>
+            <div class="fc-tool"><div class="ft-name">Vocal Texture</div><div class="ft-desc">Match or deliberately contrast vocal register across consecutive tracks.</div><div class="ft-tier">Mixer · Musixmatch + Analysis</div></div>
+            <div class="fc-tool"><div class="ft-name">Crowd Call</div><div class="ft-desc">Identify and time anthemic call-and-response moments in your set.</div><div class="ft-tier">Mixer · Genius Annotations</div></div>
+            <div class="fc-tool"><div class="ft-name">The Silent Set</div><div class="ft-desc">Instrumental tracks only — tell the story without words.</div><div class="ft-tier">Architect · Internal</div></div>
+            <div class="fc-tool"><div class="ft-name">Subtext Map</div><div class="ft-desc">What does each track say underneath the lyrics? Map the emotional subtext of a set.</div><div class="ft-tier">Steward · Semantic Layer</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-category">
+        <div class="fc-header" onclick="toggleFC(this)">
+          <div class="fc-title">⚡ Energy &amp; Arc</div>
+          <div class="fc-meta"><span class="fc-count">6 tools</span><span class="fc-tier">Rookie → Architect</span><span class="fc-arrow">▶</span></div>
+        </div>
+        <div class="fc-body">
+          <div class="fc-tools">
+            <div class="fc-tool"><div class="ft-name">Crowd Reader</div><div class="ft-desc">Simulated crowd reacts to your decisions in real-time. Read what you can't hear.</div><div class="ft-tier">Rookie · Internal Algorithm</div></div>
+            <div class="fc-tool"><div class="ft-name">Peak Planner</div><div class="ft-desc">Draw your energy arc before selecting tracks. Then execute against your plan.</div><div class="ft-tier">Selector · Internal</div></div>
+            <div class="fc-tool"><div class="ft-name">Valley &amp; Rebuild</div><div class="ft-desc">Score intentional energy drops and recoveries. The dip is the skill.</div><div class="ft-tier">Mixer · Crowd Simulation</div></div>
+            <div class="fc-tool"><div class="ft-name">Open/Close Pairs</div><div class="ft-desc">Tools that force intentional set openers and closers. First and last track discipline.</div><div class="ft-tier">Mixer · Internal</div></div>
+            <div class="fc-tool"><div class="ft-name">The Long Game</div><div class="ft-desc">Multi-hour arc challenges with phase targets. Real stamina and planning required.</div><div class="ft-tier">Architect · Internal</div></div>
+            <div class="fc-tool"><div class="ft-name">Mirror Set</div><div class="ft-desc">Build a set, then construct its inverse arc. Understanding structure by inverting it.</div><div class="ft-tier">Architect · Internal</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-category">
+        <div class="fc-header" onclick="toggleFC(this)">
+          <div class="fc-title">👂 Ear Training</div>
+          <div class="fc-meta"><span class="fc-count">6 tools</span><span class="fc-tier">Rookie → Architect</span><span class="fc-arrow">▶</span></div>
+        </div>
+        <div class="fc-body">
+          <div class="fc-tools">
+            <div class="fc-tool"><div class="ft-name">Tempo Tap</div><div class="ft-desc">Tap BPM by ear and compare to actual. The foundation of everything else.</div><div class="ft-tier">Rookie · No Data Needed</div></div>
+            <div class="fc-tool"><div class="ft-name">Key ID</div><div class="ft-desc">Hear a clip, identify the Camelot position. Builds the ear behind the theory.</div><div class="ft-tier">Selector · AcousticBrainz</div></div>
+            <div class="fc-tool"><div class="ft-name">Phrase Ear</div><div class="ft-desc">Hear when a phrase ends — no visual cue. Critical for real-world mixing.</div><div class="ft-tier">Mixer · No Data Needed</div></div>
+            <div class="fc-tool"><div class="ft-name">Clash Detector</div><div class="ft-desc">Identify harmonic clashes in a mix before committing. Train the correction reflex.</div><div class="ft-tier">Mixer · Key Finder</div></div>
+            <div class="fc-tool"><div class="ft-name">Blind Mix</div><div class="ft-desc">No metadata shown. All decisions made purely by ear. For Architect tier and above.</div><div class="ft-tier">Architect · Audio Only</div></div>
+            <div class="fc-tool"><div class="ft-name">Ghost Track</div><div class="ft-desc">Mix over a track you can only partially hear. Simulates real booth monitor conditions.</div><div class="ft-tier">Architect · Audio Analysis</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-category">
+        <div class="fc-header" onclick="toggleFC(this)">
+          <div class="fc-title">🌍 Cultural Knowledge</div>
+          <div class="fc-meta"><span class="fc-count">6 tools</span><span class="fc-tier">Selector → Steward</span><span class="fc-arrow">▶</span></div>
+        </div>
+        <div class="fc-body">
+          <div class="fc-tools">
+            <div class="fc-tool"><div class="ft-name">Origin Trace</div><div class="ft-desc">Connect tracks to genre origins and scenes. Understand where the music comes from.</div><div class="ft-tier">Selector · MusicBrainz + AllMusic</div></div>
+            <div class="fc-tool"><div class="ft-name">Regional Sound</div><div class="ft-desc">Identify Detroit, Chicago, London, Lagos — by sound, not by label.</div><div class="ft-tier">Mixer · Steward Knowledge</div></div>
+            <div class="fc-tool"><div class="ft-name">The Lineage Set</div><div class="ft-desc">Build a set tracing one genre from root to branch. History as set architecture.</div><div class="ft-tier">Mixer · MusicBrainz + Stewards</div></div>
+            <div class="fc-tool"><div class="ft-name">Sample ID</div><div class="ft-desc">Identify the source sample in a track. Builds deep understanding of music construction.</div><div class="ft-tier">Architect · WhoSampled</div></div>
+            <div class="fc-tool"><div class="ft-name">Venue Context</div><div class="ft-desc">Match sets to documented venue histories. The room matters as much as the music.</div><div class="ft-tier">Architect · Steward Knowledge</div></div>
+            <div class="fc-tool"><div class="ft-name">Scene Builder</div><div class="ft-desc">Map a genre's full social and sonic context. The most advanced cultural tool.</div><div class="ft-tier">Steward · Full Stack</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-category">
+        <div class="fc-header" onclick="toggleFC(this)">
+          <div class="fc-title">🎭 Performance &amp; Presence</div>
+          <div class="fc-meta"><span class="fc-count">6 tools</span><span class="fc-tier">Rookie → Steward</span><span class="fc-arrow">▶</span></div>
+        </div>
+        <div class="fc-body">
+          <div class="fc-tools">
+            <div class="fc-tool"><div class="ft-name">Clock Run</div><div class="ft-desc">Time-constrained decisions with no pausing. Simulates real booth time pressure.</div><div class="ft-tier">Rookie · No Data Needed</div></div>
+            <div class="fc-tool"><div class="ft-name">Request Handler</div><div class="ft-desc">An incoming "request" fires mid-set. Work it in or decline gracefully — scored either way.</div><div class="ft-tier">Selector · Library Search</div></div>
+            <div class="fc-tool"><div class="ft-name">Back-to-Back Sim</div><div class="ft-desc">AI simulates a B2B partner picking tracks. Adapt your set live to someone else's choices.</div><div class="ft-tier">Mixer · Internal AI</div></div>
+            <div class="fc-tool"><div class="ft-name">Open Format Drill</div><div class="ft-desc">Radical genre pivots, crowd-first scoring. Everything you know must flex.</div><div class="ft-tier">Mixer · Full Stack</div></div>
+            <div class="fc-tool"><div class="ft-name">Technical Fail</div><div class="ft-desc">Simulated gear drop mid-set. Recover in 8 bars. Nobody trains for this — until now.</div><div class="ft-tier">Architect · Internal</div></div>
+            <div class="fc-tool"><div class="ft-name">The Handoff</div><div class="ft-desc">End your set perfectly for the DJ who follows. Scored by what comes next, not just what you played.</div><div class="ft-tier">Steward · Community</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- LOGO WALL -->
+  <section>
+    <p class="section-label">Data Partners</p>
+    <h2>Built on open data<br>and <em>respectful APIs</em>.</h2>
+    <p class="body-text" style="margin-top:16px;margin-bottom:0">Open Decks is built on open data and respectful API use. Many of these services are free and open-source. We give credit, link back, and build on top — not over.</p>
+    <div class="logo-wall">
+      <div class="logo-tile"><div class="logo-icon">🎵</div><div class="logo-name">Spotify</div><div class="logo-type">Library + Audio Features</div></div>
+      <div class="logo-tile"><div class="logo-icon">🍎</div><div class="logo-name">Apple Music</div><div class="logo-type">Library + MusicKit</div></div>
+      <div class="logo-tile"><div class="logo-icon">▶</div><div class="logo-name">YouTube Music</div><div class="logo-type">Stream Reference</div></div>
+      <div class="logo-tile"><div class="logo-icon">📝</div><div class="logo-name">Genius</div><div class="logo-type">Lyrics + Annotations</div></div>
+      <div class="logo-tile"><div class="logo-icon">🎤</div><div class="logo-name">Musixmatch</div><div class="logo-type">Lyrics + Mood Tags</div></div>
+      <div class="logo-tile"><div class="logo-icon">🔬</div><div class="logo-name">AcousticBrainz</div><div class="logo-type">Audio Analysis · Open</div></div>
+      <div class="logo-tile"><div class="logo-icon">🎛</div><div class="logo-name">Essentia.js</div><div class="logo-type">In-Browser Analysis · Open</div></div>
+      <div class="logo-tile"><div class="logo-icon">🗝</div><div class="logo-name">Key Finder</div><div class="logo-type">Camelot Mapping</div></div>
+      <div class="logo-tile"><div class="logo-icon">🗃</div><div class="logo-name">MusicBrainz</div><div class="logo-type">Metadata · Open Source</div></div>
+      <div class="logo-tile"><div class="logo-icon">💿</div><div class="logo-name">Discogs</div><div class="logo-type">Label + Release Data</div></div>
+      <div class="logo-tile"><div class="logo-icon">📖</div><div class="logo-name">AllMusic</div><div class="logo-type">Genre Lineage</div></div>
+      <div class="logo-tile"><div class="logo-icon">🔁</div><div class="logo-name">WhoSampled</div><div class="logo-type">Sample Chains</div></div>
+      <div class="logo-tile"><div class="logo-icon">📡</div><div class="logo-name">Last.fm</div><div class="logo-type">Similarity Graphs</div></div>
+      <div class="logo-tile" style="border-color:var(--coral);background:rgba(224,90,58,0.05)"><div class="logo-icon">🎙</div><div class="logo-name">Open X</div><div class="logo-type">Community Knowledge</div></div>
+    </div>
+  </section>
+</div>
+
+<script>
+function toggleFC(header) {{
+  header.classList.toggle('open');
+  header.nextElementSibling.classList.toggle('open');
+}}
+</script>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo"><div class="od-mark">OD</div>Open Decks</div>
+      <p class="footer-brand-sub">A platform for learning DJ culture.<br>Built by <a href="about.html">Open X</a> — a Richmond, VA 501(c)(3).<br><a href="https://openx.org" target="_blank">openx.org ↗</a></p>
+    </div>
+    <div class="footer-col">
+      <h5>Platform</h5>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="concept.html">Concept Demo</a></li>
+        <li><a href="how-it-works.html">How It Works</a></li>
+        <li><a href="tiers.html">Tiers & Access</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Community</h5>
+      <ul>
+        <li><a href="about.html">About Open X</a></li>
+        <li><a href="about.html#stewards">Become a Steward</a></li>
+        <li><a href="about.html#venues">Partner a Venue</a></li>
+        <li><a href="tiers.html">Join Free</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Powered By</h5>
+      <ul>
+        <li><a href="#" target="_blank">Spotify · Apple Music</a></li>
+        <li><a href="#" target="_blank">Genius · Musixmatch</a></li>
+        <li><a href="#" target="_blank">MusicBrainz · Discogs</a></li>
+        <li><a href="#" target="_blank">WhoSampled · Last.fm</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Open Decks · A program of <strong>Open X</strong> · 501(c)(3) · Richmond, VA</p>
+    <p>Music culture belongs to everyone.</p>
+  </div>
+</footer>
+</body>
+</html>

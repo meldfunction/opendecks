@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concept — Open Decks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0C0F0A;
+  --surface: #141710;
+  --surface2: #1C2018;
+  --border: #2A2E26;
+  --border2: #363B30;
+  --green: #A8C27A;
+  --green-b: #C8E890;
+  --green-d: rgba(168,194,122,0.10);
+  --amber: #E8B84B;
+  --coral: #E05A3A;
+  --text: #E8E4D8;
+  --muted: #6B7060;
+  --muted2: #9A9080;
+  --nav-h: 64px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'DM Mono',monospace;line-height:1.6;
+  overflow-x:hidden;padding-top:var(--nav-h);
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 70% 40% at 50% 0%,rgba(168,194,122,0.04) 0%,transparent 70%);
+}
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;
+  background:rgba(12,15,10,0.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:16px;
+  letter-spacing:-0.5px;color:var(--text);text-decoration:none;
+  display:flex;align-items:center;gap:10px;
+}
+.nav-logo .od-mark{
+  width:28px;height:28px;background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;color:var(--bg);letter-spacing:-0.5px;
+}
+.nav-links{display:flex;gap:0;list-style:none;}
+.nav-links a{
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:600;
+  letter-spacing:0.5px;color:var(--muted);text-decoration:none;
+  padding:8px 16px;transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--text)}
+.nav-links a.active{color:var(--green-b)}
+.nav-cta{
+  padding:9px 22px;background:var(--green);
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--bg);text-decoration:none;border:none;cursor:pointer;
+  transition:background 0.2s;white-space:nowrap;
+}
+.nav-cta:hover{background:var(--green-b)}
+/* ── SHARED LAYOUT ── */
+.page-wrap{max-width:1100px;margin:0 auto;padding:0 48px;}
+section{padding:88px 0;}
+.section-label{
+  font-family:'Syne',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:4px;text-transform:uppercase;color:var(--green);margin-bottom:18px;
+}
+h1{
+  font-family:'Fraunces',serif;
+  font-size:clamp(56px,9vw,120px);font-weight:800;
+  line-height:0.92;letter-spacing:-3px;color:var(--text);
+}
+h1 em{font-style:italic;color:var(--green-b)}
+h2{
+  font-family:'Fraunces',serif;
+  font-size:clamp(36px,4.5vw,64px);font-weight:700;
+  line-height:1.0;letter-spacing:-2px;color:var(--text);
+}
+h2 em{font-style:italic;color:var(--green-b)}
+h3{
+  font-family:'Fraunces',serif;font-size:clamp(22px,2.5vw,32px);
+  font-weight:700;letter-spacing:-0.8px;color:var(--text);
+}
+.body-text{
+  font-size:14px;font-weight:300;color:var(--muted2);line-height:1.9;
+}
+.body-text strong{color:var(--text);font-weight:500}
+.divider{border:none;border-top:1px solid var(--border);margin:0;}
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  text-decoration:none;border:none;cursor:pointer;
+  padding:13px 30px;transition:all 0.2s;
+}
+.btn-primary{background:var(--green);color:var(--bg)}
+.btn-primary:hover{background:var(--green-b)}
+.btn-ghost{background:transparent;color:var(--text);border:1.5px solid var(--border2)}
+.btn-ghost:hover{border-color:var(--green);color:var(--green)}
+/* ── CHIPS ── */
+.chip{
+  display:inline-flex;padding:5px 14px;
+  border:1px solid var(--border2);font-size:9px;
+  font-family:'Syne',sans-serif;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted2);
+}
+.chip.on{border-color:var(--green);color:var(--green);background:var(--green-d)}
+/* ── FOOTER ── */
+footer{
+  background:var(--surface);border-top:1px solid var(--border);
+  padding:56px 48px 36px;position:relative;z-index:1;
+}
+.footer-grid{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;
+  margin-bottom:48px;
+}
+.footer-logo{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:16px;
+  letter-spacing:-0.5px;margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.footer-logo .od-mark{
+  width:24px;height:24px;background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:800;color:var(--bg);
+}
+.footer-brand-sub{
+  font-size:12px;font-weight:300;color:var(--muted);line-height:1.7;
+}
+.footer-brand-sub a{color:var(--green);text-decoration:none}
+.footer-col h5{
+  font-family:'Syne',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;
+  color:rgba(168,194,122,0.4);margin-bottom:16px;
+}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-col a{
+  font-size:12px;font-weight:300;color:var(--muted);
+  text-decoration:none;transition:color 0.2s;
+}
+.footer-col a:hover{color:var(--green)}
+.footer-bottom{
+  max-width:1100px;margin:0 auto;
+  border-top:1px solid var(--border);padding-top:24px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+}
+.footer-bottom p{font-size:11px;font-weight:300;color:var(--muted)}
+.footer-bottom strong{color:var(--green);font-weight:500}
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .page-wrap,.footer-grid{padding:0 20px}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+  section{padding:64px 0}
+}
+@media(max-width:600px){
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;text-align:center}
+}
+
+.concept-hero{padding:80px 0 48px;}
+.concept-hero h1{font-size:clamp(48px,7vw,96px);}
+/* zone labels */
+.zone-label{
+  display:flex;align-items:center;gap:16px;
+  font-family:'Syne',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:4px;text-transform:uppercase;color:var(--green);
+  margin-bottom:24px;
+}
+.zone-label::after{content:'';flex:1;height:1px;background:var(--border);}
+/* youtube zone */
+.yt-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;}
+.yt-card{
+  background:var(--surface);border:1px solid var(--border);
+  padding:18px 16px;cursor:pointer;transition:all 0.2s;
+}
+.yt-card:hover,.yt-card.active{border-color:var(--green);background:var(--green-d);}
+.yt-genre{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:8px;}
+.yt-title{font-family:'Fraunces',serif;font-size:15px;font-weight:700;letter-spacing:-0.3px;margin-bottom:4px;}
+.yt-meta{font-size:10px;color:var(--muted);line-height:1.5;}
+.yt-embed{width:100%;aspect-ratio:16/9;background:#000;border:1px solid var(--border);margin-bottom:8px;}
+.yt-embed iframe{width:100%;height:100%;border:none;}
+/* alphabet challenge */
+.challenge-wrap{display:grid;grid-template-columns:1fr 340px;gap:32px;align-items:start;}
+.alpha-bar{height:4px;background:var(--border);margin-bottom:24px;position:relative;overflow:hidden;}
+.alpha-bar-fill{position:absolute;left:0;top:0;bottom:0;background:var(--green);transition:width 0.6s ease;}
+.track-row{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;background:var(--surface);border:1px solid transparent;
+  margin-bottom:4px;cursor:pointer;transition:all 0.15s;
+}
+.track-row:hover{border-color:var(--border2);}
+.track-row.current{border-color:var(--green);background:var(--green-d);}
+.track-row.done{opacity:0.45;}
+.tl{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:var(--border2);min-width:28px;transition:color 0.15s;}
+.track-row.current .tl{color:var(--green-b);}
+.track-row.done .tl{color:var(--muted);}
+.ti{flex:1;min-width:0;}
+.ti-title{font-size:11px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ti-artist{font-size:10px;color:var(--muted);}
+.t-bpm{font-size:10px;color:var(--muted);text-align:right;min-width:48px;}
+.t-key{
+  font-size:9px;padding:3px 7px;border:1px solid var(--border2);
+  color:var(--muted2);font-family:'Syne',sans-serif;font-weight:600;
+  min-width:36px;text-align:center;
+}
+.t-key.compat{border-color:rgba(168,194,122,0.5);color:var(--green);}
+.t-key.tension{border-color:rgba(232,184,75,0.5);color:var(--amber);}
+.t-btn{
+  padding:5px 10px;border:1px solid var(--border2);background:transparent;
+  font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;
+  text-transform:uppercase;color:var(--muted2);cursor:pointer;transition:all 0.15s;
+}
+.t-btn:hover{border-color:var(--green);color:var(--green);}
+.t-chk{color:var(--green);font-size:12px;}
+/* phrase panel */
+.phrase-panel{background:var(--surface);border:1px solid var(--border);padding:24px;position:sticky;top:80px;}
+.pp-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:16px;}
+.pp-track{font-family:'Fraunces',serif;font-size:16px;font-weight:700;letter-spacing:-0.3px;margin-bottom:4px;}
+.pp-artist{font-size:11px;color:var(--muted);margin-bottom:16px;}
+.pp-lyric{
+  font-size:12px;font-style:italic;color:var(--muted2);line-height:1.65;
+  padding:12px;border-left:2px solid var(--border2);margin-bottom:16px;
+}
+.pp-lyric em{color:var(--green-b);font-style:normal;background:var(--green-d);}
+.pp-label2{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.pp-match{
+  padding:10px 12px;background:var(--surface2);border:1px solid var(--border);
+  margin-bottom:6px;cursor:pointer;transition:border-color 0.15s;
+}
+.pp-match:hover{border-color:var(--green);}
+.pp-match-title{font-size:11px;color:var(--text);margin-bottom:3px;}
+.pp-match-lyric{font-size:10px;color:var(--muted2);font-style:italic;}
+.score-bar{
+  display:flex;gap:16px;margin-top:24px;
+  padding:16px;background:var(--surface2);border:1px solid var(--border);
+}
+.sc-item{flex:1;}
+.sc-lbl{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.sc-val{font-family:'Fraunces',serif;font-size:24px;font-weight:800;letter-spacing:-1px;color:var(--green-b);}
+/* deck sim */
+.deck-wrap{display:grid;grid-template-columns:1fr 160px 1fr;gap:0;border:1px solid var(--border);}
+.deck{background:var(--surface);padding:24px 20px;}
+.deck-label{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.waveform{height:48px;background:var(--surface2);border:1px solid var(--border);margin-bottom:12px;position:relative;overflow:hidden;}
+.waveform-bars{display:flex;align-items:center;height:100%;gap:1px;padding:4px 8px;}
+.waveform-bars span{flex:1;background:var(--green);opacity:0.5;border-radius:1px;}
+.playhead{position:absolute;top:0;bottom:0;width:2px;background:var(--green-b);left:30%;box-shadow:0 0 8px rgba(200,232,144,0.6);}
+.deck-track{font-family:'Fraunces',serif;font-size:14px;font-weight:700;letter-spacing:-0.3px;margin-bottom:2px;}
+.deck-artist{font-size:10px;color:var(--muted);margin-bottom:12px;}
+.deck-bpm{font-family:'Fraunces',serif;font-size:32px;font-weight:800;letter-spacing:-2px;line-height:1;color:var(--green-b);margin-bottom:4px;}
+.deck-key{
+  display:inline-flex;padding:3px 8px;border:1px solid var(--green);
+  font-size:9px;font-family:'Syne',sans-serif;font-weight:700;
+  color:var(--green);letter-spacing:2px;margin-bottom:16px;
+}
+.deck-controls{display:flex;gap:8px;margin-bottom:12px;}
+.dc-btn{
+  flex:1;padding:8px 4px;background:var(--surface2);border:1px solid var(--border2);
+  font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);
+  cursor:pointer;transition:all 0.15s;text-align:center;
+}
+.dc-btn:hover{border-color:var(--green);color:var(--green);}
+.dc-btn.playing{background:var(--green-d);border-color:var(--green);color:var(--green-b);}
+.pitch-wrap{margin-bottom:12px;}
+.pitch-label{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.pitch-slider{width:100%;accent-color:var(--green);cursor:pointer;}
+.loop-btns{display:flex;gap:4px;}
+.loop-btn{
+  flex:1;padding:5px;background:var(--surface2);border:1px solid var(--border2);
+  font-size:9px;color:var(--muted);cursor:pointer;text-align:center;transition:all 0.15s;
+}
+.loop-btn:hover,.loop-btn.on{border-color:var(--amber);color:var(--amber);background:rgba(232,184,75,0.08);}
+/* mixer strip */
+.mixer-strip{
+  background:var(--surface2);border-left:1px solid var(--border);border-right:1px solid var(--border);
+  padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+.mixer-label{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
+.fader-wrap{display:flex;gap:10px;align-items:flex-end;height:80px;}
+.fader{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.fader-track{
+  width:4px;height:64px;background:var(--border);border-radius:2px;position:relative;cursor:pointer;
+}
+.fader-fill{position:absolute;bottom:0;left:0;right:0;background:var(--green);border-radius:2px;transition:height 0.2s;}
+.fader-lbl{font-size:7px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.xfader-wrap{width:100%;}
+.xf-track{height:4px;background:var(--border);border-radius:2px;position:relative;cursor:pointer;}
+.xf-thumb{
+  position:absolute;top:50%;transform:translate(-50%,-50%);
+  width:12px;height:20px;background:var(--text);border-radius:2px;
+  left:50%;cursor:grab;transition:left 0.1s;
+}
+.knob-row{display:flex;gap:8px;}
+.knob-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.knob{
+  width:28px;height:28px;border-radius:50%;
+  background:conic-gradient(var(--green) 0deg 200deg, var(--border) 200deg 360deg);
+  cursor:pointer;border:2px solid var(--border2);
+}
+.knob-lbl{font-size:7px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.compat-indicator{
+  width:100%;padding:8px;text-align:center;
+  font-size:8px;letter-spacing:2px;text-transform:uppercase;
+  border:1px solid;font-family:'Syne',sans-serif;font-weight:700;
+}
+.compat-g{border-color:var(--green);color:var(--green);background:var(--green-d);}
+.compat-a{border-color:var(--amber);color:var(--amber);background:rgba(232,184,75,0.08);}
+.compat-r{border-color:var(--coral);color:var(--coral);background:rgba(224,90,58,0.08);}
+/* platform previews */
+.preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:40px;}
+.preview-device{display:flex;flex-direction:column;gap:16px;}
+.device-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--green);}
+.device-screenshots{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+/* macOS frame */
+.mac-frame{background:#1a1a1a;border-radius:10px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.6);}
+.mac-titlebar{background:#2a2a2a;padding:8px 12px;display:flex;align-items:center;gap:6px;}
+.mac-dot{width:10px;height:10px;border-radius:50%;}
+.mac-dot.r{background:#ff5f57}.mac-dot.y{background:#febc2e}.mac-dot.g{background:#28c840}
+.mac-urlbar{flex:1;background:#3a3a3a;border-radius:4px;padding:3px 10px;font-size:9px;color:#888;margin:0 12px;}
+.mac-content{padding:0;aspect-ratio:16/10;overflow:hidden;position:relative;}
+/* iOS frame */
+.ios-frame{
+  background:#1a1a1a;border-radius:40px;overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,0.6);max-width:200px;margin:0 auto;
+  border:6px solid #2a2a2a;
+}
+.ios-notch{height:24px;background:#0a0a0a;display:flex;justify-content:center;align-items:center;}
+.ios-notch::after{content:'';width:60px;height:14px;background:#1a1a1a;border-radius:0 0 10px 10px;}
+.ios-content{aspect-ratio:9/16;overflow:hidden;position:relative;}
+/* browser frame */
+.browser-frame{background:#1a1a1a;border-radius:8px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.6);}
+.browser-bar{background:#2a2a2a;padding:8px 12px;display:flex;align-items:center;gap:8px;}
+.browser-dots{display:flex;gap:5px;}
+.browser-urlbar{flex:1;background:#3a3a3a;border-radius:20px;padding:4px 12px;font-size:9px;color:#888;}
+/* screenshot content (simulated) */
+.ss-content{width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;}
+.ss-header{background:var(--surface2);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;}
+.ss-hl{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);}
+.ss-body{flex:1;padding:12px;overflow:hidden;}
+.ss-track-mini{display:flex;align-items:center;gap:8px;padding:8px;background:var(--surface);margin-bottom:4px;}
+.ss-letter{font-family:'Fraunces',serif;font-size:16px;font-weight:900;color:var(--border2);min-width:20px;}
+.ss-letter.on{color:var(--green-b)}
+.ss-info{flex:1;}
+.ss-t{font-size:9px;color:var(--text);}
+.ss-a{font-size:8px;color:var(--muted);}
+.ss-k{font-size:8px;padding:2px 5px;border:1px solid var(--border2);color:var(--muted2);}
+.ss-k.ok{border-color:var(--green);color:var(--green);}
+/* ring chart mini */
+.mini-ring{width:48px;height:48px;position:relative;display:flex;align-items:center;justify-content:center;}
+.mini-ring svg{position:absolute;inset:0;transform:rotate(-90deg);}
+.mini-ring-num{font-family:'Fraunces',serif;font-size:11px;font-weight:700;color:var(--green-b);}
+/* tier badge */
+.tier-badge{display:inline-flex;padding:3px 8px;background:var(--green-d);border:1px solid rgba(168,194,122,0.3);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--green);}
+@media(max-width:900px){
+  .yt-cards,.challenge-wrap,.deck-wrap,.preview-grid{grid-template-columns:1fr;}
+  .deck-wrap{grid-template-columns:1fr}
+  .mixer-strip{flex-direction:row;flex-wrap:wrap;justify-content:center;}
+  .device-screenshots{grid-template-columns:1fr}
+}
+
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="od-mark">OD</div>
+    Open Decks
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+<li><a href="concept.html" class="active">Concept</a></li>
+<li><a href="how-it-works.html">How It Works</a></li>
+<li><a href="tiers.html">Tiers</a></li>
+<li><a href="about.html">About</a></li>
+
+  </ul>
+  <a href="tiers.html" class="nav-cta">Start Free</a>
+</nav>
+<div class="page-wrap">
+  <section class="concept-hero">
+    <p class="section-label">Concept Demo</p>
+    <h1>The platform,<br>in your browser,<br><em>right now.</em></h1>
+    <p class="body-text" style="margin-top:20px;max-width:560px">No account. No library connection. Play with the tools live — using real tracks and real challenges. This is what it feels like.</p>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="zone-label">01 — Listen While You Learn</div>
+    <p class="body-text" style="margin-bottom:20px">Cue up a DJ set as your reference. Feel the genre, the energy, the structure — while you work through the challenge below.</p>
+
+    <div class="yt-cards" id="ytCards">
+      <div class="yt-card active" onclick="loadYT('jNQXAC9IVRw', this)">
+        <div class="yt-genre">Underground House</div>
+        <div class="yt-title">Dixon</div>
+        <p class="yt-meta">Panorama Bar 2019<br>120–130 BPM · Keys 8A–9B</p>
+      </div>
+      <div class="yt-card" onclick="loadYT('3Mw3JMcvAdk', this)">
+        <div class="yt-genre">Hip-Hop</div>
+        <div class="yt-title">DJ Premier</div>
+        <p class="yt-meta">Classic Sessions<br>85–95 BPM · Varied keys</p>
+      </div>
+      <div class="yt-card" onclick="loadYT('5HF2R4gGYzA', this)">
+        <div class="yt-genre">Disco / Funk</div>
+        <div class="yt-title">Larry Levan Tribute</div>
+        <p class="yt-meta">Paradise Garage style<br>110–125 BPM · 4A–6B</p>
+      </div>
+      <div class="yt-card" onclick="loadYT('lTx3G6h2xyA', this)">
+        <div class="yt-genre">Drum & Bass</div>
+        <div class="yt-title">LTJ Bukem</div>
+        <p class="yt-meta">Metalheadz Session<br>168–174 BPM · Dark keys</p>
+      </div>
+    </div>
+    <div class="yt-embed" id="ytPlayer">
+      <iframe src="https://www.youtube.com/embed/jNQXAC9IVRw?autoplay=0&rel=0" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="zone-label">02 — Try the Challenge: Alphabet Run</div>
+    <p class="body-text" style="margin-bottom:24px">We've pre-loaded a house music playlist. Confirm which track goes at each letter — or swap it with something that fits better. Your Harmonic Flow and Energy scores update in real time.</p>
+
+    <div class="score-bar">
+      <div class="sc-item"><div class="sc-lbl">Harmonic Flow</div><div class="sc-val" id="scoreHarm">82%</div></div>
+      <div class="sc-item"><div class="sc-lbl">Energy Arc</div><div class="sc-val" id="scoreEnergy">71%</div></div>
+      <div class="sc-item"><div class="sc-lbl">Letters Done</div><div class="sc-val" id="scoreDone">2 / 7</div></div>
+    </div>
+
+    <div style="margin-top:16px;" class="challenge-wrap">
+      <div>
+        <div class="alpha-bar"><div class="alpha-bar-fill" id="alphaFill" style="width:28%"></div></div>
+        <div id="trackList">
+          <div class="track-row done" data-idx="0">
+            <div class="tl">A</div>
+            <div class="ti"><div class="ti-title">All I Do</div><div class="ti-artist">Soul II Soul</div></div>
+            <div class="t-bpm">91 BPM</div>
+            <div class="t-key compat">4A</div>
+            <div class="t-chk">✓</div>
+          </div>
+          <div class="track-row done" data-idx="1">
+            <div class="tl">B</div>
+            <div class="ti"><div class="ti-title">Burning</div><div class="ti-artist">Bicep</div></div>
+            <div class="t-bpm">126 BPM</div>
+            <div class="t-key compat">8B</div>
+            <div class="t-chk">✓</div>
+          </div>
+          <div class="track-row current" id="trackC" data-idx="2">
+            <div class="tl">C</div>
+            <div class="ti"><div class="ti-title">Cola</div><div class="ti-artist">CamelPhat</div></div>
+            <div class="t-bpm">124 BPM</div>
+            <div class="t-key compat">8A</div>
+            <button class="t-btn" onclick="confirmTrack(2)">Confirm ✓</button>
+            <button class="t-btn" onclick="showSwap()">Swap →</button>
+          </div>
+          <div class="track-row" data-idx="3">
+            <div class="tl">D</div>
+            <div class="ti"><div class="ti-title">Deep Inside</div><div class="ti-artist">Hardrive</div></div>
+            <div class="t-bpm">126 BPM</div>
+            <div class="t-key tension">9B</div>
+            <button class="t-btn" onclick="showSwap()">Swap →</button>
+          </div>
+          <div class="track-row" data-idx="4" style="opacity:0.4">
+            <div class="tl">E</div>
+            <div class="ti"><div class="ti-title">Everybody</div><div class="ti-artist">Phats &amp; Small</div></div>
+            <div class="t-bpm">128 BPM</div>
+            <div class="t-key compat">10B</div>
+            <button class="t-btn">Swap →</button>
+          </div>
+          <div class="track-row" data-idx="5" style="opacity:0.3">
+            <div class="tl">F</div>
+            <div class="ti"><div class="ti-title">Finally</div><div class="ti-artist">Kings of Tomorrow</div></div>
+            <div class="t-bpm">126 BPM</div>
+            <div class="t-key compat">9A</div>
+            <button class="t-btn">Swap →</button>
+          </div>
+          <div class="track-row" data-idx="6" style="opacity:0.2">
+            <div class="tl">G</div>
+            <div class="ti"><div class="ti-title">Give It Up</div><div class="ti-artist">Todd Terry</div></div>
+            <div class="t-bpm">124 BPM</div>
+            <div class="t-key compat">8A</div>
+            <button class="t-btn">Swap →</button>
+          </div>
+        </div>
+        <div id="swapPanel" style="display:none;margin-top:12px;padding:16px;background:var(--surface2);border:1px solid var(--border);">
+          <p style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:10px">Search your library for C—</p>
+          <input type="text" placeholder="Search tracks starting with C..." style="width:100%;background:var(--surface);border:1px solid var(--border2);color:var(--text);padding:10px 12px;font-family:'DM Mono',monospace;font-size:12px;outline:none;margin-bottom:10px;">
+          <div class="track-row" onclick="swapTrack('Casanova','E-Smoove','122','8A')">
+            <div class="tl" style="font-size:14px;color:var(--muted2)">C</div>
+            <div class="ti"><div class="ti-title">Casanova</div><div class="ti-artist">E-Smoove</div></div>
+            <div class="t-bpm">122 BPM</div>
+            <div class="t-key compat">8A</div>
+          </div>
+          <div class="track-row" onclick="swapTrack('Calling Out','Basement Jaxx','128','7B')">
+            <div class="tl" style="font-size:14px;color:var(--muted2)">C</div>
+            <div class="ti"><div class="ti-title">Calling Out</div><div class="ti-artist">Basement Jaxx</div></div>
+            <div class="t-bpm">128 BPM</div>
+            <div class="t-key tension">7B</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="phrase-panel">
+          <div class="pp-label">Phrase Finder · Active Track</div>
+          <div class="pp-track" id="ppTrack">Cola</div>
+          <div class="pp-artist" id="ppArtist">CamelPhat · 124 BPM · 8A</div>
+          <div class="pp-lyric">"<em>cola</em> lips and acid eyes, running through the night..."</div>
+          <div class="pp-label2">Lyrical bridges found:</div>
+          <div class="pp-match">
+            <div class="pp-match-title">Deep Inside — Hardrive</div>
+            <div class="pp-match-lyric">"running deep inside the music..." — D match ✓</div>
+          </div>
+          <div class="pp-match">
+            <div class="pp-match-title">Children of the Night — Narada</div>
+            <div class="pp-match-lyric">"acid lights and city nights..." — mood match</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="zone-label">03 — Feel the Controls</div>
+    <p class="body-text" style="margin-bottom:24px">Not a real mixer — a feel for the layout and decisions a DJ makes every transition. Loaded with the challenge tracks. The harmonic compatibility indicator updates as you drag the crossfader.</p>
+
+    <div class="deck-wrap">
+      <!-- LEFT DECK -->
+      <div class="deck">
+        <div class="deck-label">← Deck A · Now Playing</div>
+        <div class="waveform">
+          <div class="waveform-bars"><span style="height:34%"></span><span style="height:23%"></span><span style="height:55%"></span><span style="height:51%"></span><span style="height:48%"></span><span style="height:37%"></span><span style="height:33%"></span><span style="height:89%"></span><span style="height:31%"></span><span style="height:74%"></span><span style="height:24%"></span><span style="height:23%"></span><span style="height:31%"></span><span style="height:47%"></span><span style="height:49%"></span><span style="height:84%"></span><span style="height:23%"></span><span style="height:45%"></span><span style="height:89%"></span><span style="height:73%"></span><span style="height:48%"></span><span style="height:77%"></span><span style="height:55%"></span><span style="height:20%"></span><span style="height:40%"></span><span style="height:74%"></span><span style="height:63%"></span><span style="height:55%"></span><span style="height:39%"></span><span style="height:47%"></span><span style="height:63%"></span><span style="height:33%"></span><span style="height:31%"></span><span style="height:68%"></span><span style="height:32%"></span><span style="height:65%"></span><span style="height:64%"></span><span style="height:53%"></span><span style="height:25%"></span><span style="height:78%"></span><span style="height:88%"></span><span style="height:35%"></span><span style="height:68%"></span><span style="height:30%"></span><span style="height:90%"></span><span style="height:57%"></span><span style="height:66%"></span><span style="height:44%"></span><span style="height:28%"></span><span style="height:25%"></span></div>
+          <div class="playhead"></div>
+        </div>
+        <div class="deck-track">Cola</div>
+        <div class="deck-artist">CamelPhat</div>
+        <div class="deck-bpm">124</div>
+        <div class="deck-key">8A · F# min</div>
+        <div class="deck-controls">
+          <div class="dc-btn">◀◀ REW</div>
+          <div class="dc-btn playing" id="playA" onclick="togglePlay('A')">▶❚❚ PLAY</div>
+          <div class="dc-btn">CUE ▶</div>
+        </div>
+        <div class="pitch-wrap">
+          <div class="pitch-label">Pitch ±8%</div>
+          <input type="range" class="pitch-slider" min="-8" max="8" value="0" step="0.1">
+        </div>
+        <div class="loop-btns">
+          <div class="loop-btn">4</div><div class="loop-btn on">8</div>
+          <div class="loop-btn">16</div><div class="loop-btn">32</div>
+        </div>
+      </div>
+
+      <!-- MIXER -->
+      <div class="mixer-strip">
+        <div class="mixer-label">Mixer</div>
+        <div class="knob-row">
+          <div class="knob-wrap"><div class="knob" style="background:conic-gradient(var(--green) 0deg 240deg, var(--border) 240deg)"></div><div class="knob-lbl">HI</div></div>
+          <div class="knob-wrap"><div class="knob" style="background:conic-gradient(var(--green) 0deg 180deg, var(--border) 180deg)"></div><div class="knob-lbl">MID</div></div>
+          <div class="knob-wrap"><div class="knob" style="background:conic-gradient(var(--green) 0deg 200deg, var(--border) 200deg)"></div><div class="knob-lbl">LOW</div></div>
+        </div>
+        <div class="fader-wrap">
+          <div class="fader">
+            <div class="fader-track" id="faderA"><div class="fader-fill" style="height:80%"></div></div>
+            <div class="fader-lbl">A</div>
+          </div>
+          <div class="fader">
+            <div class="fader-track" id="faderB"><div class="fader-fill" style="height:30%"></div></div>
+            <div class="fader-lbl">B</div>
+          </div>
+        </div>
+        <div class="xfader-wrap">
+          <div class="mixer-label" style="margin-bottom:6px">X-Fader</div>
+          <div class="xf-track" id="xfTrack">
+            <div class="xf-thumb" id="xfThumb"></div>
+          </div>
+        </div>
+        <div class="compat-indicator compat-g" id="compatIndicator">
+          ✓ COMPAT
+        </div>
+        <div style="font-size:8px;color:var(--muted);text-align:center;">8A → 9B<br>Tension zone</div>
+      </div>
+
+      <!-- RIGHT DECK -->
+      <div class="deck">
+        <div class="deck-label">Deck B · Cued Up →</div>
+        <div class="waveform">
+          <div class="waveform-bars"><span style="height:34%"></span><span style="height:23%"></span><span style="height:55%"></span><span style="height:51%"></span><span style="height:48%"></span><span style="height:37%"></span><span style="height:33%"></span><span style="height:89%"></span><span style="height:31%"></span><span style="height:74%"></span><span style="height:24%"></span><span style="height:23%"></span><span style="height:31%"></span><span style="height:47%"></span><span style="height:49%"></span><span style="height:84%"></span><span style="height:23%"></span><span style="height:45%"></span><span style="height:89%"></span><span style="height:73%"></span><span style="height:48%"></span><span style="height:77%"></span><span style="height:55%"></span><span style="height:20%"></span><span style="height:40%"></span><span style="height:74%"></span><span style="height:63%"></span><span style="height:55%"></span><span style="height:39%"></span><span style="height:47%"></span><span style="height:63%"></span><span style="height:33%"></span><span style="height:31%"></span><span style="height:68%"></span><span style="height:32%"></span><span style="height:65%"></span><span style="height:64%"></span><span style="height:53%"></span><span style="height:25%"></span><span style="height:78%"></span><span style="height:88%"></span><span style="height:35%"></span><span style="height:68%"></span><span style="height:30%"></span><span style="height:90%"></span><span style="height:57%"></span><span style="height:66%"></span><span style="height:44%"></span><span style="height:28%"></span><span style="height:25%"></span></div>
+          <div class="playhead" style="left:5%;opacity:0.4"></div>
+        </div>
+        <div class="deck-track">Deep Inside</div>
+        <div class="deck-artist">Hardrive</div>
+        <div class="deck-bpm">126</div>
+        <div class="deck-key" style="border-color:var(--amber);color:var(--amber)">9B · B maj</div>
+        <div class="deck-controls">
+          <div class="dc-btn">◀◀ REW</div>
+          <div class="dc-btn" id="playB" onclick="togglePlay('B')">▶❚❚ PLAY</div>
+          <div class="dc-btn">CUE ▶</div>
+        </div>
+        <div class="pitch-wrap">
+          <div class="pitch-label">Pitch ±8%</div>
+          <input type="range" class="pitch-slider" min="-8" max="8" value="0" step="0.1">
+        </div>
+        <div class="loop-btns">
+          <div class="loop-btn">4</div><div class="loop-btn">8</div>
+          <div class="loop-btn">16</div><div class="loop-btn">32</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:16px;line-height:1.7">
+      These controls simulate what a DJ manages every transition. The harmonic compatibility indicator (centre) reflects whether the two loaded keys work together — 8A and 9B are a tension zone: technically compatible, but with an edge. On Open Decks, challenges are designed around exactly these decisions — without requiring any hardware.
+    </p>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="zone-label">04 — Coming to macOS, iOS &amp; Browser</div>
+    <p class="body-text" style="margin-bottom:32px">One platform, three surfaces — each designed for how you actually practice.</p>
+
+    <div class="preview-grid">
+
+      <!-- macOS -->
+      <div class="preview-device">
+        <div class="device-label">macOS App</div>
+        <div class="device-screenshots">
+          <!-- macOS SS1: Dashboard -->
+          <div class="mac-frame">
+            <div class="mac-titlebar">
+              <div class="mac-dot r"></div><div class="mac-dot y"></div><div class="mac-dot g"></div>
+              <div class="mac-urlbar">Open Decks</div>
+            </div>
+            <div class="mac-content">
+              <div class="ss-content" style="background:var(--bg)">
+                <div class="ss-header">
+                  <span class="ss-hl">Dashboard</span>
+                  <div class="mini-ring">
+                    <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="none" stroke="var(--border)" stroke-width="3"/><circle cx="24" cy="24" r="20" fill="none" stroke="var(--green)" stroke-width="3" stroke-dasharray="125.6" stroke-dashoffset="38" stroke-linecap="round"/></svg>
+                    <span class="mini-ring-num">70%</span>
+                  </div>
+                </div>
+                <div class="ss-body">
+                  <div class="tier-badge" style="margin-bottom:8px">● Selector · L9</div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:8px">
+                    <div style="background:var(--surface2);border:1px solid var(--green);padding:8px;font-size:8px;color:var(--green)">🎵 Alphabet Run<br><span style="color:var(--muted)">A→G active</span></div>
+                    <div style="background:var(--surface2);border:1px solid var(--border);padding:8px;font-size:8px;color:var(--muted)">🔍 Phrase Find<br>42 bridges</div>
+                    <div style="background:var(--surface2);border:1px solid var(--border);padding:8px;font-size:8px;color:var(--muted)">🎲 Camelot Wild<br>D12 mode</div>
+                    <div style="background:var(--surface2);border:1px solid var(--border);padding:8px;font-size:8px;color:var(--muted)">🎯 The SET<br>Beta</div>
+                  </div>
+                  <div style="background:var(--surface2);padding:8px;border:1px solid var(--border)">
+                    <div style="font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Passport Badges</div>
+                    <div style="display:flex;gap:4px">
+                      <span style="font-size:12px">🏆</span><span style="font-size:12px">⚡</span><span style="font-size:12px">🧭</span><span style="font-size:12px;opacity:0.3">🎧</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- macOS SS2: Alphabet Run -->
+          <div class="mac-frame">
+            <div class="mac-titlebar">
+              <div class="mac-dot r"></div><div class="mac-dot y"></div><div class="mac-dot g"></div>
+              <div class="mac-urlbar">Alphabet Run · House Mix</div>
+            </div>
+            <div class="mac-content">
+              <div class="ss-content" style="background:var(--bg)">
+                <div class="ss-header"><span class="ss-hl">Alphabet Run</span><span style="font-size:8px;color:var(--green)">3/26</span></div>
+                <div class="ss-body">
+                  <div style="height:3px;background:var(--border);margin-bottom:8px;position:relative"><div style="position:absolute;left:0;top:0;bottom:0;width:12%;background:var(--green)"></div></div>
+                  <div class="ss-track-mini"><div class="ss-letter">A</div><div class="ss-info"><div class="ss-t">All I Do</div><div class="ss-a">Soul II Soul</div></div><span class="ss-k ok">4A</span></div>
+                  <div class="ss-track-mini"><div class="ss-letter">B</div><div class="ss-info"><div class="ss-t">Burning</div><div class="ss-a">Bicep</div></div><span class="ss-k ok">8B</span></div>
+                  <div class="ss-track-mini" style="border:1px solid var(--green);background:var(--green-d)"><div class="ss-letter on">C</div><div class="ss-info"><div class="ss-t">Cola</div><div class="ss-a">CamelPhat</div></div><span class="ss-k ok">8A</span></div>
+                  <div class="ss-track-mini" style="opacity:0.4"><div class="ss-letter">D</div><div class="ss-info"><div class="ss-t">Deep Inside</div><div class="ss-a">Hardrive</div></div><span class="ss-k">9B</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- iOS -->
+      <div class="preview-device">
+        <div class="device-label">iOS App</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <!-- iOS SS1: Challenge -->
+          <div class="ios-frame">
+            <div class="ios-notch"></div>
+            <div class="ios-content">
+              <div class="ss-content" style="background:var(--bg)">
+                <div class="ss-header"><span class="ss-hl" style="font-size:8px">Challenge</span><span style="font-size:8px;color:var(--green)">C</span></div>
+                <div class="ss-body" style="padding:8px">
+                  <div class="tier-badge" style="margin-bottom:6px;font-size:7px">Selector · L9</div>
+                  <div style="background:var(--surface2);border:1px solid var(--green);padding:10px;margin-bottom:6px">
+                    <div style="font-size:8px;color:var(--green);margin-bottom:4px">Current · C</div>
+                    <div style="font-family:'Fraunces',serif;font-size:14px;font-weight:700">Cola</div>
+                    <div style="font-size:8px;color:var(--muted)">CamelPhat · 8A</div>
+                  </div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px">
+                    <div style="background:var(--green);color:var(--bg);padding:6px;font-size:8px;font-weight:700;text-align:center;letter-spacing:1px">CONFIRM ✓</div>
+                    <div style="background:var(--surface2);border:1px solid var(--border2);padding:6px;font-size:8px;color:var(--muted2);text-align:center">SWAP →</div>
+                  </div>
+                  <div style="font-size:8px;color:var(--muted);text-align:center">Harmonic: <span style="color:var(--green)">82%</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- iOS SS2: Camelot Wild -->
+          <div class="ios-frame">
+            <div class="ios-notch"></div>
+            <div class="ios-content">
+              <div class="ss-content" style="background:var(--bg)">
+                <div class="ss-header"><span class="ss-hl" style="font-size:8px">Camelot Wild</span><span style="font-size:8px;color:var(--coral)">D12</span></div>
+                <div class="ss-body" style="padding:8px;display:flex;flex-direction:column;align-items:center;gap:8px">
+                  <svg viewBox="-60 -60 120 120" width="110" height="110" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="0" cy="0" r="56" fill="none" stroke="var(--border)" stroke-width="1"/>
+                    <circle cx="0" cy="0" r="34" fill="none" stroke="var(--border)" stroke-width="1"/>
+                    <circle cx="0" cy="0" r="12" fill="var(--surface)" stroke="var(--border2)" stroke-width="1"/>
+                    <path d="M0,0 L48.5,-28 A56,56 0 0,1 48.5,28 Z" fill="var(--green-d)" stroke="var(--border2)" stroke-width="0.5"/>
+                    <text x="38" y="4" font-family="Georgia" font-size="9" font-weight="900" fill="var(--green-b)" text-anchor="middle">1B</text>
+                    <text x="28" y="42" font-family="Georgia" font-size="7" fill="var(--muted)" text-anchor="middle">2B</text>
+                    <text x="-18" y="52" font-family="Georgia" font-size="7" fill="var(--muted)" text-anchor="middle">3B</text>
+                    <text x="-50" y="4" font-family="Georgia" font-size="7" fill="var(--muted)" text-anchor="middle">4B</text>
+                    <text x="-28" y="-40" font-family="Georgia" font-size="7" fill="var(--muted)" text-anchor="middle">5B</text>
+                    <text x="18" y="-48" font-family="Georgia" font-size="7" fill="var(--muted)" text-anchor="middle">6B</text>
+                    <text x="0" y="4" font-family="Georgia" font-size="7" fill="var(--muted)" text-anchor="middle">1A</text>
+                  </svg>
+                  <div style="background:var(--surface2);border:1px solid var(--green);padding:8px;width:100%;text-align:center">
+                    <div style="font-size:7px;color:var(--muted);letter-spacing:2px;margin-bottom:2px">POSITION</div>
+                    <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:800;color:var(--green-b)">1B</div>
+                  </div>
+                  <div style="background:var(--coral);color:white;padding:6px 16px;font-size:9px;font-weight:700;letter-spacing:2px;cursor:pointer">🎲 ROLL</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Browser -->
+      <div class="preview-device">
+        <div class="device-label">Browser</div>
+        <div class="device-screenshots">
+          <!-- Browser SS1: Phrase Finder -->
+          <div class="browser-frame">
+            <div class="browser-bar">
+              <div class="browser-dots"><div class="mac-dot r"></div><div class="mac-dot y"></div><div class="mac-dot g"></div></div>
+              <div class="browser-urlbar">opendecks.io/phrase-finder</div>
+            </div>
+            <div style="background:var(--bg);padding:10px;aspect-ratio:16/10">
+              <div style="font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:8px">Phrase Finder</div>
+              <div style="display:flex;border:1px solid var(--border2);background:var(--surface2);margin-bottom:8px">
+                <span style="padding:6px 8px;font-size:8px;color:var(--green);border-right:1px solid var(--border2)">&gt;_</span>
+                <span style="padding:6px 8px;font-size:8px;color:var(--text)">losing yourself on the dancefloor</span>
+              </div>
+              <div style="background:var(--surface);border:1px solid var(--amber);padding:8px;margin-bottom:4px">
+                <div style="font-size:8px;color:var(--amber);margin-bottom:2px">TOP MATCH</div>
+                <div style="font-size:9px;font-weight:600">Lost in Music · Sister Sledge</div>
+                <div style="font-size:8px;color:var(--muted2);font-style:italic;margin-top:3px">"caught in a trap, lost in music..."</div>
+              </div>
+              <div style="background:var(--surface);border:1px solid var(--border);padding:6px;margin-bottom:4px">
+                <div style="font-size:9px">Dance Yourself Clean · LCD</div>
+                <div style="font-size:8px;color:var(--muted2);font-style:italic">"losing yourself again and again..."</div>
+              </div>
+            </div>
+          </div>
+          <!-- Browser SS2: The SET -->
+          <div class="browser-frame">
+            <div class="browser-bar">
+              <div class="browser-dots"><div class="mac-dot r"></div><div class="mac-dot y"></div><div class="mac-dot g"></div></div>
+              <div class="browser-urlbar">opendecks.io/the-set</div>
+            </div>
+            <div style="background:var(--bg);padding:10px;aspect-ratio:16/10">
+              <div style="font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--coral);margin-bottom:6px">● The SET · Mixer Tier</div>
+              <div style="background:var(--surface);border:1px solid var(--border);padding:8px;margin-bottom:6px">
+                <div style="font-size:7px;color:var(--muted);margin-bottom:4px;letter-spacing:1px;text-transform:uppercase">GIG BRIEF</div>
+                <div style="font-family:'Fraunces',serif;font-size:10px;font-style:italic">Underground warehouse, 1AM. Build to the peak.</div>
+              </div>
+              <div style="height:6px;background:var(--border);position:relative;margin-bottom:6px">
+                <div style="position:absolute;left:0;top:0;bottom:0;width:40%;background:linear-gradient(to right,var(--green),var(--amber))"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:8px;color:var(--muted)">
+                <span>Crowd: <span style="color:var(--green)">▲ Building</span></span>
+                <span>Track 4/10</span>
+                <span>Rule Break: <span style="color:var(--coral)">Available</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<script>
+function loadYT(id, el) {
+  document.querySelectorAll('.yt-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('ytPlayer').innerHTML = '<iframe src="https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0" allowfullscreen></iframe>';
+}
+
+let doneCount = 2;
+function confirmTrack(idx) {
+  const row = document.querySelector('[data-idx="' + idx + '"]');
+  row.classList.remove('current');
+  row.classList.add('done');
+  row.querySelectorAll('.t-btn').forEach(b => b.remove());
+  row.querySelector('.t-key').insertAdjacentHTML('afterend', '<div class="t-chk">✓</div>');
+  doneCount++;
+  document.getElementById('scoreDone').textContent = doneCount + ' / 7';
+  document.getElementById('alphaFill').style.width = (doneCount / 7 * 100) + '%';
+  document.getElementById('scoreHarm').textContent = Math.min(95, 82 + doneCount * 3) + '%';
+  const next = document.querySelector('[data-idx="' + (idx+1) + '"]');
+  if (next) next.classList.add('current');
+  document.getElementById('swapPanel').style.display = 'none';
+}
+
+function showSwap() {
+  const sp = document.getElementById('swapPanel');
+  sp.style.display = sp.style.display === 'none' ? 'block' : 'none';
+}
+
+function swapTrack(title, artist, bpm, key) {
+  const row = document.getElementById('trackC');
+  row.querySelector('.ti-title').textContent = title;
+  row.querySelector('.ti-artist').textContent = artist;
+  row.querySelector('.t-bpm').textContent = bpm + ' BPM';
+  row.querySelector('.t-key').textContent = key;
+  document.getElementById('ppTrack').textContent = title;
+  document.getElementById('ppArtist').textContent = artist + ' · ' + bpm + ' BPM · ' + key;
+  document.getElementById('swapPanel').style.display = 'none';
+}
+
+function togglePlay(deck) {
+  const btn = document.getElementById('play' + deck);
+  btn.classList.toggle('playing');
+  btn.textContent = btn.classList.contains('playing') ? '❚❚ PAUSE' : '▶ PLAY';
+  updateCompat();
+}
+
+function updateCompat() {
+  const a = document.getElementById('playA').classList.contains('playing');
+  const b = document.getElementById('playB').classList.contains('playing');
+  const ind = document.getElementById('compatIndicator');
+  if (a && b) {
+    ind.className = 'compat-indicator compat-a';
+    ind.textContent = '~ TENSION';
+  } else {
+    ind.className = 'compat-indicator compat-g';
+    ind.textContent = '✓ COMPAT';
+  }
+}
+
+// Draggable crossfader
+const xfTrack = document.getElementById('xfTrack');
+const xfThumb = document.getElementById('xfThumb');
+let dragging = false;
+xfThumb.addEventListener('mousedown', () => dragging = true);
+document.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  const rect = xfTrack.getBoundingClientRect();
+  const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  xfThumb.style.left = (x * 100) + '%';
+  const fA = document.querySelector('#faderA .fader-fill');
+  const fB = document.querySelector('#faderB .fader-fill');
+  fA.style.height = (100 - x * 80) + '%';
+  fB.style.height = (20 + x * 80) + '%';
+});
+document.addEventListener('mouseup', () => dragging = false);
+</script>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo"><div class="od-mark">OD</div>Open Decks</div>
+      <p class="footer-brand-sub">A platform for learning DJ culture.<br>Built by <a href="about.html">Open X</a> — a Richmond, VA 501(c)(3).<br><a href="https://openx.org" target="_blank">openx.org ↗</a></p>
+    </div>
+    <div class="footer-col">
+      <h5>Platform</h5>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="concept.html">Concept Demo</a></li>
+        <li><a href="how-it-works.html">How It Works</a></li>
+        <li><a href="tiers.html">Tiers & Access</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Community</h5>
+      <ul>
+        <li><a href="about.html">About Open X</a></li>
+        <li><a href="about.html#stewards">Become a Steward</a></li>
+        <li><a href="about.html#venues">Partner a Venue</a></li>
+        <li><a href="tiers.html">Join Free</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Powered By</h5>
+      <ul>
+        <li><a href="#" target="_blank">Spotify · Apple Music</a></li>
+        <li><a href="#" target="_blank">Genius · Musixmatch</a></li>
+        <li><a href="#" target="_blank">MusicBrainz · Discogs</a></li>
+        <li><a href="#" target="_blank">WhoSampled · Last.fm</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Open Decks · A program of <strong>Open X</strong> · 501(c)(3) · Richmond, VA</p>
+    <p>Music culture belongs to everyone.</p>
+  </div>
+</footer>
+</body>
+</html>

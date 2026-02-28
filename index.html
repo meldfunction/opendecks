@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home — Open Decks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0C0F0A;
+  --surface: #141710;
+  --surface2: #1C2018;
+  --border: #2A2E26;
+  --border2: #363B30;
+  --green: #A8C27A;
+  --green-b: #C8E890;
+  --green-d: rgba(168,194,122,0.10);
+  --amber: #E8B84B;
+  --coral: #E05A3A;
+  --text: #E8E4D8;
+  --muted: #6B7060;
+  --muted2: #9A9080;
+  --nav-h: 64px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'DM Mono',monospace;line-height:1.6;
+  overflow-x:hidden;padding-top:var(--nav-h);
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 70% 40% at 50% 0%,rgba(168,194,122,0.04) 0%,transparent 70%);
+}
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;
+  background:rgba(12,15,10,0.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:16px;
+  letter-spacing:-0.5px;color:var(--text);text-decoration:none;
+  display:flex;align-items:center;gap:10px;
+}
+.nav-logo .od-mark{
+  width:28px;height:28px;background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;color:var(--bg);letter-spacing:-0.5px;
+}
+.nav-links{display:flex;gap:0;list-style:none;}
+.nav-links a{
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:600;
+  letter-spacing:0.5px;color:var(--muted);text-decoration:none;
+  padding:8px 16px;transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--text)}
+.nav-links a.active{color:var(--green-b)}
+.nav-cta{
+  padding:9px 22px;background:var(--green);
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--bg);text-decoration:none;border:none;cursor:pointer;
+  transition:background 0.2s;white-space:nowrap;
+}
+.nav-cta:hover{background:var(--green-b)}
+/* ── SHARED LAYOUT ── */
+.page-wrap{max-width:1100px;margin:0 auto;padding:0 48px;}
+section{padding:88px 0;}
+.section-label{
+  font-family:'Syne',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:4px;text-transform:uppercase;color:var(--green);margin-bottom:18px;
+}
+h1{
+  font-family:'Fraunces',serif;
+  font-size:clamp(56px,9vw,120px);font-weight:800;
+  line-height:0.92;letter-spacing:-3px;color:var(--text);
+}
+h1 em{font-style:italic;color:var(--green-b)}
+h2{
+  font-family:'Fraunces',serif;
+  font-size:clamp(36px,4.5vw,64px);font-weight:700;
+  line-height:1.0;letter-spacing:-2px;color:var(--text);
+}
+h2 em{font-style:italic;color:var(--green-b)}
+h3{
+  font-family:'Fraunces',serif;font-size:clamp(22px,2.5vw,32px);
+  font-weight:700;letter-spacing:-0.8px;color:var(--text);
+}
+.body-text{
+  font-size:14px;font-weight:300;color:var(--muted2);line-height:1.9;
+}
+.body-text strong{color:var(--text);font-weight:500}
+.divider{border:none;border-top:1px solid var(--border);margin:0;}
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  text-decoration:none;border:none;cursor:pointer;
+  padding:13px 30px;transition:all 0.2s;
+}
+.btn-primary{background:var(--green);color:var(--bg)}
+.btn-primary:hover{background:var(--green-b)}
+.btn-ghost{background:transparent;color:var(--text);border:1.5px solid var(--border2)}
+.btn-ghost:hover{border-color:var(--green);color:var(--green)}
+/* ── CHIPS ── */
+.chip{
+  display:inline-flex;padding:5px 14px;
+  border:1px solid var(--border2);font-size:9px;
+  font-family:'Syne',sans-serif;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted2);
+}
+.chip.on{border-color:var(--green);color:var(--green);background:var(--green-d)}
+/* ── FOOTER ── */
+footer{
+  background:var(--surface);border-top:1px solid var(--border);
+  padding:56px 48px 36px;position:relative;z-index:1;
+}
+.footer-grid{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;
+  margin-bottom:48px;
+}
+.footer-logo{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:16px;
+  letter-spacing:-0.5px;margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.footer-logo .od-mark{
+  width:24px;height:24px;background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:800;color:var(--bg);
+}
+.footer-brand-sub{
+  font-size:12px;font-weight:300;color:var(--muted);line-height:1.7;
+}
+.footer-brand-sub a{color:var(--green);text-decoration:none}
+.footer-col h5{
+  font-family:'Syne',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;
+  color:rgba(168,194,122,0.4);margin-bottom:16px;
+}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-col a{
+  font-size:12px;font-weight:300;color:var(--muted);
+  text-decoration:none;transition:color 0.2s;
+}
+.footer-col a:hover{color:var(--green)}
+.footer-bottom{
+  max-width:1100px;margin:0 auto;
+  border-top:1px solid var(--border);padding-top:24px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+}
+.footer-bottom p{font-size:11px;font-weight:300;color:var(--muted)}
+.footer-bottom strong{color:var(--green);font-weight:500}
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .page-wrap,.footer-grid{padding:0 20px}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+  section{padding:64px 0}
+}
+@media(max-width:600px){
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;text-align:center}
+}
+
+.hero{padding:100px 0 80px;position:relative;overflow:hidden;}
+.hero-bg{
+  position:absolute;top:50%;left:60%;transform:translate(-50%,-50%);
+  font-family:'Fraunces',serif;font-size:clamp(200px,28vw,400px);
+  font-weight:900;color:transparent;
+  -webkit-text-stroke:1px rgba(168,194,122,0.06);
+  pointer-events:none;user-select:none;white-space:nowrap;
+}
+.hero h1{margin-bottom:28px;}
+.hero-sub{font-size:16px;font-weight:300;color:var(--muted2);max-width:560px;line-height:1.85;margin-bottom:40px;}
+.hero-sub strong{color:var(--text);font-weight:500}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:60px;}
+.hero-stat-row{display:flex;gap:48px;padding-top:48px;border-top:1px solid var(--border);flex-wrap:wrap;}
+.stat-n{font-family:'Fraunces',serif;font-size:42px;font-weight:800;letter-spacing:-2px;color:var(--green-b);line-height:1;}
+.stat-l{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px;}
+/* problem cards */
+.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:40px;}
+.prob-card{background:var(--surface);border:1px solid var(--border);padding:32px 28px;}
+.prob-card:hover{border-color:var(--border2);}
+.prob-icon{font-size:22px;margin-bottom:14px;}
+.prob-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:10px;}
+.prob-body{font-size:12px;font-weight:300;color:var(--muted2);line-height:1.75;}
+/* tech section */
+.tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;margin-top:0;}
+.tech-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;}
+.tech-link{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--green);text-decoration:none;letter-spacing:1px;margin-top:24px;}
+.tech-link:hover{color:var(--green-b)}
+/* personas */
+.persona-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:40px;}
+.persona-card{background:var(--surface);border:1px solid var(--border);padding:28px 22px;position:relative;overflow:hidden;}
+.persona-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--green);transform:scaleX(0);transform-origin:left;transition:transform 0.3s;}
+.persona-card:hover::before{transform:scaleX(1);}
+.persona-label{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:10px;}
+.persona-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;letter-spacing:-0.5px;margin-bottom:10px;}
+.persona-body{font-size:11px;font-weight:300;color:var(--muted2);line-height:1.7;}
+/* built by */
+.built-by{background:var(--surface);border:1px solid var(--border);padding:52px 48px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.built-quote{font-family:'Fraunces',serif;font-size:clamp(20px,2.5vw,30px);font-style:italic;font-weight:500;letter-spacing:-0.5px;line-height:1.4;color:var(--text);}
+.built-quote em{color:var(--green-b);font-style:normal;}
+.built-body{font-size:13px;font-weight:300;color:var(--muted2);line-height:1.85;}
+.built-body strong{color:var(--text);font-weight:500}
+@media(max-width:900px){
+  .problem-grid,.persona-grid{grid-template-columns:1fr 1fr;}
+  .tech-grid,.built-by{grid-template-columns:1fr;gap:32px;}
+}
+@media(max-width:600px){.problem-grid,.persona-grid{grid-template-columns:1fr;}}
+
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="od-mark">OD</div>
+    Open Decks
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+<li><a href="concept.html">Concept</a></li>
+<li><a href="how-it-works.html">How It Works</a></li>
+<li><a href="tiers.html">Tiers</a></li>
+<li><a href="about.html">About</a></li>
+
+  </ul>
+  <a href="tiers.html" class="nav-cta">Start Free</a>
+</nav>
+<div class="page-wrap">
+  <section class="hero">
+    <div class="hero-bg">OPEN</div>
+    <p class="section-label">Open Decks · Platform</p>
+    <h1>Learn to DJ.<br><em>For real<br>this time.</em></h1>
+    <p class="hero-sub">Open Decks is a browser and app platform that teaches DJ skills through structured challenges — using your own music library, <strong>no gear required</strong>. Built on real technique. Designed to be open to everyone.</p>
+    <div class="hero-actions">
+      <a href="how-it-works.html" class="btn btn-primary">See How It Works →</a>
+      <a href="concept.html" class="btn btn-ghost">Try the Demo</a>
+    </div>
+    <div class="hero-stat-row">
+      <div><div class="stat-n">8</div><div class="stat-l">Tool Categories</div></div>
+      <div><div class="stat-n">30+</div><div class="stat-l">Challenges</div></div>
+      <div><div class="stat-n">5</div><div class="stat-l">Skill Tiers</div></div>
+      <div><div class="stat-n">0</div><div class="stat-l">Gear Required</div></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <p class="section-label">The Problem</p>
+    <h2>Three things that<br>keep people out.</h2>
+    <div class="problem-grid">
+      <div class="prob-card">
+        <div class="prob-icon">💸</div>
+        <div class="prob-title">Gear costs too much</div>
+        <p class="prob-body">A decent entry-level controller starts at $300. Professional setups run thousands. Open Decks runs in your browser. The gear question goes away entirely.</p>
+      </div>
+      <div class="prob-card">
+        <div class="prob-icon">📚</div>
+        <div class="prob-title">No one explains the rules</div>
+        <p class="prob-body">Most DJ education is YouTube chaos or $500 courses. We wrote The Rulebook: a practitioner's field guide to the craft. Free. Written by working DJs.</p>
+      </div>
+      <div class="prob-card">
+        <div class="prob-icon">🚪</div>
+        <div class="prob-title">The scene is closed</div>
+        <p class="prob-body">DJ culture has gatekeeping problems. Open Decks doesn't lower the bar — it removes the invisible walls. The skills are real. The access should be too.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <p class="section-label">The Technology</p>
+    <div class="tech-grid">
+      <div>
+        <h2>Your library.<br>Our <em>intelligence.</em></h2>
+        <p class="body-text" style="margin-top:20px">Open Decks connects to Spotify, Apple Music, or local files. It analyzes BPM, harmonic key, era, energy, and lyrical content — then turns that data into real challenges. The Alphabet Run navigates your actual library. Phrase Finder finds emotional bridges between tracks. Camelot Wild Mode builds harmonic instinct under pressure.</p>
+        <a href="how-it-works.html" class="tech-link">See all tools and data sources →</a>
+      </div>
+      <div>
+        <div class="tech-chips">
+          <span class="chip on">BPM Analysis</span>
+          <span class="chip on">Key Detection</span>
+          <span class="chip on">Lyric Search</span>
+          <span class="chip">Era Mapping</span>
+          <span class="chip">Crowd Simulation</span>
+          <span class="chip">Audio Fingerprinting</span>
+          <span class="chip">Influence Graphs</span>
+          <span class="chip">Sample Tracking</span>
+          <span class="chip">Cultural Context</span>
+          <span class="chip">Ear Training</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <p class="section-label">Who This Is For</p>
+    <h2>Everyone who loves<br><em>music</em> enough to learn it.</h2>
+    <div class="persona-grid">
+      <div class="persona-card">
+        <div class="persona-label">Complete Beginner</div>
+        <div class="persona-title">"I've never touched decks"</div>
+        <p class="persona-body">Sample playlists, guided challenges, no gear, no account needed. Start with Alphabet Run today.</p>
+      </div>
+      <div class="persona-card">
+        <div class="persona-label">Early Stage</div>
+        <div class="persona-title">"I've been playing a year"</div>
+        <p class="persona-body">Connect your library, unlock Phrase Finder and Camelot Wild, and start building real instincts.</p>
+      </div>
+      <div class="persona-card">
+        <div class="persona-label">Working DJ</div>
+        <div class="persona-title">"I play clubs and parties"</div>
+        <p class="persona-body">Blind Mix, Back-to-Back Sim, Technical Fail, The SET game. Structured pressure for real-world skills.</p>
+      </div>
+      <div class="persona-card">
+        <div class="persona-label">Educator / Practitioner</div>
+        <div class="persona-title">"I want to teach"</div>
+        <p class="persona-body">The Steward track. Governance role in Open X. Shape the curriculum. Contribute what no API contains.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="built-by">
+      <div class="built-quote">"The closed booth, the closed circle, the closed scene — <em>those days are over.</em>"</div>
+      <div>
+        <p class="built-body">Open Decks is a program of <strong>Open X</strong> — a Richmond, VA nonprofit that believes music culture belongs to everyone. Our Stewards are established DJs who don't just teach. They govern. Every tool in this platform was shaped by practitioners, not developers.</p>
+        <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;">
+          <a href="about.html" class="btn btn-ghost">Learn about Open X →</a>
+          <a href="about.html#stewards" class="btn btn-ghost">Become a Steward</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo"><div class="od-mark">OD</div>Open Decks</div>
+      <p class="footer-brand-sub">A platform for learning DJ culture.<br>Built by <a href="about.html">Open X</a> — a Richmond, VA 501(c)(3).<br><a href="https://openx.org" target="_blank">openx.org ↗</a></p>
+    </div>
+    <div class="footer-col">
+      <h5>Platform</h5>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="concept.html">Concept Demo</a></li>
+        <li><a href="how-it-works.html">How It Works</a></li>
+        <li><a href="tiers.html">Tiers & Access</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Community</h5>
+      <ul>
+        <li><a href="about.html">About Open X</a></li>
+        <li><a href="about.html#stewards">Become a Steward</a></li>
+        <li><a href="about.html#venues">Partner a Venue</a></li>
+        <li><a href="tiers.html">Join Free</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Powered By</h5>
+      <ul>
+        <li><a href="#" target="_blank">Spotify · Apple Music</a></li>
+        <li><a href="#" target="_blank">Genius · Musixmatch</a></li>
+        <li><a href="#" target="_blank">MusicBrainz · Discogs</a></li>
+        <li><a href="#" target="_blank">WhoSampled · Last.fm</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Open Decks · A program of <strong>Open X</strong> · 501(c)(3) · Richmond, VA</p>
+    <p>Music culture belongs to everyone.</p>
+  </div>
+</footer>
+</body>
+</html>
